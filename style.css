@@ -516,3 +516,83 @@ select {
 .high-risk {
     color: #df3a3a;
 }
+
+
+/* ================= BOTTOM SECTION ================= */
+
+.bottom-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.food-card,
+.alerts-card {
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 11px;
+    padding: 18px;
+}
+
+.section-title h3,
+.alert-header h3 {
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #f7f8fa;
+    color: #4e5763;
+    font-size: 11px;
+    padding: 11px;
+    text-align: left;
+}
+
+td {
+    border-bottom: 1px solid #edf0f2;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.badge {
+    display: inline-block;
+    min-width: 65px;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+.badge.safe {
+    color: #138a3d;
+    background: #e3f7e9;
+    border: 1px solid #a8dfb8;
+}
+
+.badge.medium {
+    color: #dc9417;
+    background: #fff4dc;
+    border: 1px solid #f2d08a;
+}
+
+.badge.high {
+    color: #df3636;
+    background: #ffe6e6;
+    border: 1px solid #f0b2b2;
+}
+
+.view-btn {
+    display: block;
+    margin: 17px auto 0;
+    border: none;
+    background: transparent;
+    color: #1470d2;
+    font-weight: bold;
+    cursor: pointer;
+}
