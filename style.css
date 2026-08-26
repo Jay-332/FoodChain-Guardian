@@ -32,3 +32,18 @@ select {
     min-height: 100vh;
     padding: 0 18px;
 }
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    width: 270px;
+    background: #071426;
+    color: white;
+    padding: 22px 16px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
