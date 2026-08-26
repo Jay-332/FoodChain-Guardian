@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FoodChain Guardian Dashboard</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">🛡️</div>
+
+            <div>
+                <h2>FoodChain Guardian</h2>
+                <p>Smart Food Spoilage<br>Monitoring System</p>
+            </div>
+        </div>
+
+        <!-- Navigation updated -->
+        <nav class="menu">
+
+            <button class="menu-item active">
+                <span>▣</span>
+                Dashboard
+            </button>
+
+            <button class="menu-item">
+                <span>▣</span>
+                Live Monitor
+            </button>
+
+            <button class="menu-item">
+                <span>⌁</span>
+                Food Summary
+            </button>
+
+            <button class="menu-item">
+                <span>♧</span>
+                Alerts
+            </button>
+
+            <button class="menu-item">
+                <span>◷</span>
+                History & Logs
+            </button>
+
+            <button class="menu-item">
+                <span>▤</span>
+                Reports
+            </button>
+
+            <button class="menu-item">
+                <span>⚙</span>
+                Settings
+            </button>
+
+        </nav>
+
+        <!-- FILTERS -->
+        <div class="filters">
+
+            <h4>FILTERS</h4>
+
+            <label>Date Range</label>
+
+            <select id="dateFilter">
+                <option>Today</option>
+                <option>Last 7 Days</option>
+                <option>Last 30 Days</option>
+            </select>
+
+            <div class="auto-update">
+
+                <span>Auto Update</span>
+
+                <label class="switch">
+                    <input type="checkbox" id="autoUpdate" checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+            <button class="refresh-btn" id="refreshBtn">
+                ↻ &nbsp; Refresh Now
+            </button>
+
+        </div>
+
+        <!-- SYSTEM INFO -->
+        <div class="system-info">
+
+            <h4>System Info</h4>
+
+            <div>
+                <span>Version</span>
+                <b>1.0.1</b>
+            </div>
+
+            <div>
+                <span>Database</span>
+                <b>SQLite</b>
+            </div>
+
+            <div>
+                <span>Uptime</span>
+                <b id="uptime">02:45:31</b>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+            <div class="header-left">
+
+                <button class="hamburger" id="hamburger">
+                    ☰
+                </button>
+
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Real-time monitoring of food storage conditions and spoilage risk</p>
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="online">
+                    <span></span>
+                    Online
+                </div>
+
+                <div class="clock">
+
+                    <strong id="clock">
+                        10:24:35 AM
+                    </strong>
+
+                    <small id="date">
+                        May 26, 2025
+                    </small>
+
+                </div>
+
+                <div class="notification">
+                    <span>3</span>
+                </div>
+
+                <div class="profile">
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= CARDS ================= -->
+
+        <section class="cards">
+
+            <!-- STATUS -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Overall System Status
+                </div>
+
+                <div class="status-content">
+
+                    <div class="status-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <h2 class="safe-text">
+                            SAFE
+                        </h2>
+
+                        <p>System normal</p>
+
+                        <small>
+                            Last updated:
+                            <span id="lastUpdated">10:24 AM</span>
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TEMPERATURE -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Average Temperature
+                </div>
+
+                <div class="metric">
+
+                    <div class="metric-icon temperature">
+                        ♨
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            <span id="avgTemperature">4.2</span>
+                            <small>°C</small>
+                        </h2>
+
+                        <p>Safe Range (0-7°C)</p>
+
+                        <small class="down">
+                            ↘ 0.3°C from last hour
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HUMIDITY -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Average Humidity
+                </div>
+
+                <div class="metric">
+
+                    <div class="metric-icon humidity">
+                        💧
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            <span id="avgHumidity">65</span>
+                            <small>%</small>
+                        </h2>
+
+                        <p>Safe Range (30-85%)</p>
+
+                        <small class="up">
+                            ↗ 2% from last hour
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RISK -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Overall Spoilage Risk
+                </div>
+
+                <div class="metric">
+
+                    <div class="risk-gauge">
+                        ◔
+                    </div>
+
+                    <div>
+
+                        <h2 class="risk-number">
+                            <span id="avgRisk">18</span>
+                            <small>%</small>
+                        </h2>
+
+                        <p class="safe-text">
+                            Low
+                        </p>
+
+                        <small class="down">
+                            ↘ 5% from last hour
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CHARTS ================= -->
+
+        <section class="charts">
+
+            <!-- TEMPERATURE CHART -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Safe Environment Trend
+                        </h3>
+
+                        <div class="legend">
+
+                            <span class="temperature-dot">
+                                ━ Temperature (°C)
+                            </span>
+
+                            <span class="humidity-dot">
+                                ━ Humidity (%)
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <select>
+                        <option>Last 24 Hours</option>
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                    </select>
+
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="environmentChart"></canvas>
+                </div>
+
+            </div>
+
+
+            <!-- RISK CHART -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Risk Trend
+                        </h3>
+
+                        <div class="legend">
+
+                            <span class="low-risk">
+                                ┄ Low Risk (0-30%)
+                            </span>
+
+                            <span class="medium-risk">
+                                ┄ Medium Risk (30-70%)
+                            </span>
+
+                            <span class="high-risk">
+                                ┄ High Risk (70-100%)
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <select>
+                        <option>Last 24 Hours</option>
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                    </select>
+
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="riskChart"></canvas>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= BOTTOM SECTION ================= -->
+
+        <section class="bottom-section">
+
+
+            <!-- FOOD TABLE -->
+
+            <div class="food-card">
+
+                <div class="section-title">
+
+                    <h3>
+                        Food Status
+                    </h3>
+
+                </div>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Food Item</th>
+                            <th>Temp (°C)</th>
+                            <th>Humidity (%)</th>
+                            <th>Risk (%)</th>
+                            <th>Risk Level</th>
+                            <th>Last Updated</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="foodTable">
+
+                        <tr data-food="milk">
+
+                            <td>
+                                🥛 Milk
+                            </td>
+
+                            <td>4.0</td>
+
+                            <td>60</td>
+
+                            <td>12%</td>
+
+                            <td>
+                                <span class="badge safe">
+                                    Safe
+                                </span>
+                            </td>
+
+                            <td>10:24 AM</td>
+
+                        </tr>
+
+
+                        <tr data-food="tomato">
+
+                            <td>
+                                🍅 Tomato
+                            </td>
+
+                            <td>12.5</td>
+
+                            <td>78</td>
+
+                            <td>52%</td>
+
+                            <td>
+                                <span class="badge medium">
+                                    Medium
+                                </span>
+                            </td>
+
+                            <td>10:24 AM</td>
+
+                        </tr>
+
+
+                        <tr data-food="chicken">
+
+                            <td>
+                                🍗 Chicken
+                            </td>
+
+                            <td>10.2</td>
+
+                            <td>82</td>
+
+                            <td>76%</td>
+
+                            <td>
+                                <span class="badge high">
+                                    High
+                                </span>
+                            </td>
+
+                            <td>10:24 AM</td>
+
+                        </tr>
+
+
+                        <tr data-food="spinach">
+
+                            <td>
+                                🥬 Spinach
+                            </td>
+
+                            <td>3.5</td>
+
+                            <td>55</td>
+
+                            <td>8%</td>
+
+                            <td>
+                                <span class="badge safe">
+                                    Safe
+                                </span>
+                            </td>
+
+                            <td>10:24 AM</td>
+
+                        </tr>
+
+
+                        <tr data-food="grapes">
+
+                            <td>
+                                🍇 Grapes
+                            </td>
+
+                            <td>5.1</td>
+
+                            <td>70</td>
+
+                            <td>24%</td>
+
+                            <td>
+                                <span class="badge safe">
+                                    Safe
+                                </span>
+                            </td>
+
+                            <td>10:24 AM</td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <button class="view-btn">
+                    View All Foods →
+                </button>
+
+            </div>
+
+
+            <!-- ALERTS -->
+
+            <div class="alerts-card">
+
+                <div class="alert-header">
+
+                    <h3>
+                        Alerts
+                    </h3>
+
+                    <a href="#">
+                        View All
+                    </a>
+
+                </div>
+
+
+                <div class="alert high-alert">
+
+                    <div class="alert-icon">
+                        🔔
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            HIGH RISK
+                        </strong>
+
+                        <p>
+                            Chicken – Temperature exceeded threshold
+                        </p>
+
+                        <small>
+                            10:22 AM • May 26, 2025
+                        </small>
+
+                    </div>
+
+                    <span class="new">
+                        New
+                    </span>
+
+                </div>
+
+
+                <div class="alert medium-alert">
+
+                    <div class="alert-icon">
+                        🔔
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            MEDIUM RISK
+                        </strong>
+
+                        <p>
+                            Tomato – Humidity increasing
+                        </p>
+
+                        <small>
+                            10:15 AM • May 26, 2025
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="alert low-alert">
+
+                    <div class="alert-icon">
+                        🔔
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            LOW RISK
+                        </strong>
+
+                        <p>
+                            Milk – Conditions stable
+                        </p>
+
+                        <small>
+                            09:58 AM • May 26, 2025
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <button class="view-btn">
+                    View Alert History →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <span>
+                SCM Group
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
