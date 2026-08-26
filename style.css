@@ -423,3 +423,31 @@ select {
 .metric .humidity + div h2 {
     color: #7134c9;
 }
+
+.risk-gauge {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: #ffe7e3;
+    color: #ef392b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 45px;
+}
+
+.risk-number {
+    color: #188a3a !important;
+}
+
+.metric h2 small {
+    font-size: 16px;
+}
+
+.down {
+    color: #158f3d !important;
+}
+
+.up {
+    color: #d82323 !important;
+}
