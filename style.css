@@ -451,3 +451,42 @@ select {
 .up {
     color: #d82323 !important;
 }
+
+
+/* ================= CHARTS ================= */
+
+.charts {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 18px;
+}
+
+.chart-card {
+    background: white;
+    border: 1px solid #e2e6ea;
+    border-radius: 11px;
+    padding: 18px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.chart-header h3 {
+    font-size: 15px;
+    margin-bottom: 13px;
+}
+
+.chart-header select {
+    padding: 8px 12px;
+    border: 1px solid #d4d9df;
+    background: white;
+    border-radius: 6px;
+}
+
+.chart-container {
+    height: 230px;
+    margin-top: 10px;
+}
