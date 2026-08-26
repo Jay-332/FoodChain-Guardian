@@ -490,3 +490,29 @@ select {
     height: 230px;
     margin-top: 10px;
 }
+
+.legend {
+    display: flex;
+    gap: 12px;
+    font-size: 10px;
+}
+
+.temperature-dot {
+    color: #176bd1;
+}
+
+.humidity-dot {
+    color: #62a840;
+}
+
+.low-risk {
+    color: #269c51;
+}
+
+.medium-risk {
+    color: #ee9d19;
+}
+
+.high-risk {
+    color: #df3a3a;
+}
