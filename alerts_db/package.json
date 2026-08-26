@@ -1,0 +1,17 @@
+{
+  "name": "alerts-db",
+  "version": "1.0.0",
+  "description": "Alerts + Database / Logging module for FoodChain Guardian",
+  "main": "database.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "test": "node node_modules/jest/bin/jest.js",
+    "demo": "node demo.js"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
