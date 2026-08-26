@@ -395,3 +395,22 @@ select {
 .safe-text {
     color: #198d3d !important;
 }
+
+.metric-icon {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+}
+
+.temperature {
+    background: #eaf2ff;
+    color: #1970dd;
+}
+
+.metric h2 {
+    color: #2879dd;
+}
