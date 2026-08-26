@@ -44,9 +44,19 @@ function sendSmsAlert(message) {
  * @returns {object|null} - the alert(s) created, or null if no alert needed
  */
 function checkAndTriggerAlert(db, riskResultId) {
-  const riskResult = getRiskResultById(db, riskResultId);
+  if (typeof riskResultId !== 'number' || !Number.isFinite(riskResultId)) {
+    throw new Error(`checkAndTriggerAlert: riskResultId must be a number, got: ${JSON.stringify(riskResultId)}`);
+  }
+
+  let riskResult;
+  try {
+    riskResult = getRiskResultById(db, riskResultId);
+  } catch (err) {
+    throw new Error(`checkAndTriggerAlert: failed to look up risk result #${riskResultId} — ${err.message}`);
+  }
+
   if (!riskResult) {
-    throw new Error(`No risk_result found with id ${riskResultId}`);
+    throw new Error(`checkAndTriggerAlert: no risk_result found with id ${riskResultId}`);
   }
 
   if (riskResult.risk_level !== ALERT_THRESHOLD) {
@@ -66,8 +76,18 @@ function checkAndTriggerAlert(db, riskResultId) {
   const message = `HIGH RISK detected for ${riskResult.food_type} ` +
     `(risk_result #${riskResultId}, score: ${riskResult.score ?? 'n/a'}).`;
 
-  const emailResult = sendEmailAlert(message);
-  const smsResult = sendSmsAlert(message);
+  let emailResult, smsResult;
+  try {
+    emailResult = sendEmailAlert(message);
+    smsResult = sendSmsAlert(message);
+  } catch (err) {
+    // Sending failed unexpectedly — still record that we tried, so it's visible in the log.
+    logActivity(db, {
+      event_type: 'alert_send_failed',
+      description: `Failed to send alert for risk result #${riskResultId}: ${err.message}`,
+    });
+    throw new Error(`checkAndTriggerAlert: alert sending failed — ${err.message}`);
+  }
 
   const emailAlertId = insertAlert(db, {
     risk_result_id: riskResultId,

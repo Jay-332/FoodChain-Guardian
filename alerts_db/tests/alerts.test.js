@@ -94,3 +94,28 @@ test('Safe/Medium risk results do not trigger alerts', () => {
   expect(result).toBeNull();
   expect(getAlertsForRiskResult(db, riskResultId).length).toBe(0);
 });
+
+test('insertReading rejects a missing food_type', () => {
+  expect(() => {
+    insertReading(db, { temperature: 5, humidity: 40, time_elapsed: 1 });
+  }).toThrow(/food_type/);
+});
+
+test('insertReading rejects a non-numeric temperature', () => {
+  expect(() => {
+    insertReading(db, { food_type: 'milk', temperature: 'cold', humidity: 40, time_elapsed: 1 });
+  }).toThrow(/temperature/);
+});
+
+test('insertRiskResult rejects an invalid risk_level', () => {
+  const readingId = insertReading(db, { food_type: 'milk', temperature: 5, humidity: 40, time_elapsed: 1 });
+  expect(() => {
+    insertRiskResult(db, { reading_id: readingId, risk_level: 'Extreme', score: 0.5 });
+  }).toThrow(/risk_level/);
+});
+
+test('checkAndTriggerAlert throws a clear error for a non-existent risk result id', () => {
+  expect(() => {
+    checkAndTriggerAlert(db, 99999);
+  }).toThrow(/no risk_result found/i);
+});

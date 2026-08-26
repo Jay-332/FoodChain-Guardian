@@ -11,8 +11,17 @@ const { DatabaseSync } = require('node:sqlite'); // built into Node — no compi
 const DB_PATH = path.join(__dirname, 'foodchain.db');
 
 function getDb(dbPath = DB_PATH) {
-  const db = new DatabaseSync(dbPath);
-  initSchema(db);
+  let db;
+  try {
+    db = new DatabaseSync(dbPath);
+  } catch (err) {
+    throw new Error(`getDb: could not open database at ${dbPath} — ${err.message}`);
+  }
+  try {
+    initSchema(db);
+  } catch (err) {
+    throw new Error(`getDb: connected, but failed to set up schema — ${err.message}`);
+  }
   return db;
 }
 
@@ -55,42 +64,95 @@ function initSchema(db) {
   `);
 }
 
+// ---------- Validation helpers ----------
+
+function isNonEmptyString(val) {
+  return typeof val === 'string' && val.trim().length > 0;
+}
+
+function isFiniteNumber(val) {
+  return typeof val === 'number' && Number.isFinite(val);
+}
+
 // ---------- Inserts ----------
 
 function insertReading(db, { food_type, temperature, humidity, time_elapsed }) {
-  const stmt = db.prepare(`
-    INSERT INTO readings (food_type, temperature, humidity, time_elapsed)
-    VALUES (?, ?, ?, ?)
-  `);
-  const info = stmt.run(food_type, temperature, humidity, time_elapsed);
-  return info.lastInsertRowid;
+  if (!isNonEmptyString(food_type)) {
+    throw new Error(`insertReading: food_type must be a non-empty string, got: ${JSON.stringify(food_type)}`);
+  }
+  if (!isFiniteNumber(temperature) || !isFiniteNumber(humidity) || !isFiniteNumber(time_elapsed)) {
+    throw new Error(
+      `insertReading: temperature, humidity, and time_elapsed must all be numbers ` +
+      `(got temperature=${temperature}, humidity=${humidity}, time_elapsed=${time_elapsed})`
+    );
+  }
+
+  try {
+    const stmt = db.prepare(`
+      INSERT INTO readings (food_type, temperature, humidity, time_elapsed)
+      VALUES (?, ?, ?, ?)
+    `);
+    const info = stmt.run(food_type, temperature, humidity, time_elapsed);
+    return info.lastInsertRowid;
+  } catch (err) {
+    throw new Error(`insertReading: database write failed — ${err.message}`);
+  }
 }
 
 function insertRiskResult(db, { reading_id, risk_level, score }) {
-  const stmt = db.prepare(`
-    INSERT INTO risk_results (reading_id, risk_level, score)
-    VALUES (?, ?, ?)
-  `);
-  const info = stmt.run(reading_id, risk_level, score);
-  return info.lastInsertRowid;
+  if (!isFiniteNumber(reading_id)) {
+    throw new Error(`insertRiskResult: reading_id must be a number, got: ${JSON.stringify(reading_id)}`);
+  }
+  if (!['Safe', 'Medium', 'High'].includes(risk_level)) {
+    throw new Error(`insertRiskResult: risk_level must be 'Safe', 'Medium', or 'High', got: ${JSON.stringify(risk_level)}`);
+  }
+
+  try {
+    const stmt = db.prepare(`
+      INSERT INTO risk_results (reading_id, risk_level, score)
+      VALUES (?, ?, ?)
+    `);
+    const info = stmt.run(reading_id, risk_level, score ?? null);
+    return info.lastInsertRowid;
+  } catch (err) {
+    // Most likely cause: reading_id doesn't exist in the readings table (a broken FOREIGN KEY)
+    throw new Error(`insertRiskResult: database write failed (check that reading_id ${reading_id} exists) — ${err.message}`);
+  }
 }
 
 function insertAlert(db, { risk_result_id, alert_type, message, status = 'sent' }) {
-  const stmt = db.prepare(`
-    INSERT INTO alerts (risk_result_id, alert_type, message, status)
-    VALUES (?, ?, ?, ?)
-  `);
-  const info = stmt.run(risk_result_id, alert_type, message, status);
-  return info.lastInsertRowid;
+  if (!['email', 'sms'].includes(alert_type)) {
+    throw new Error(`insertAlert: alert_type must be 'email' or 'sms', got: ${JSON.stringify(alert_type)}`);
+  }
+  if (!isNonEmptyString(message)) {
+    throw new Error(`insertAlert: message must be a non-empty string`);
+  }
+
+  try {
+    const stmt = db.prepare(`
+      INSERT INTO alerts (risk_result_id, alert_type, message, status)
+      VALUES (?, ?, ?, ?)
+    `);
+    const info = stmt.run(risk_result_id, alert_type, message, status);
+    return info.lastInsertRowid;
+  } catch (err) {
+    throw new Error(`insertAlert: database write failed — ${err.message}`);
+  }
 }
 
 function logActivity(db, { event_type, description }) {
-  const stmt = db.prepare(`
-    INSERT INTO activity_log (event_type, description)
-    VALUES (?, ?)
-  `);
-  const info = stmt.run(event_type, description);
-  return info.lastInsertRowid;
+  try {
+    const stmt = db.prepare(`
+      INSERT INTO activity_log (event_type, description)
+      VALUES (?, ?)
+    `);
+    const info = stmt.run(event_type, description);
+    return info.lastInsertRowid;
+  } catch (err) {
+    // Activity logging failing shouldn't crash the whole app — just warn.
+    console.warn(`logActivity: failed to write log entry — ${err.message}`);
+    return null;
+  }
 }
 
 // ---------- Queries ----------
