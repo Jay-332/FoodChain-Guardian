@@ -685,3 +685,63 @@ footer {
     color: #5e6670;
     font-size: 12px;
 }
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1200px) {
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .charts,
+    .bottom-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: 0.3s;
+        z-index: 1000;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .header-right .online,
+    .clock {
+        display: none;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+
+    table {
+        min-width: 700px;
+    }
+
+    .food-card {
+        overflow-x: auto;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
