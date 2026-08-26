@@ -348,3 +348,33 @@ select {
     padding: 18px;
     min-height: 150px;
 }
+
+.card-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.status-content,
+.metric {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.card h2 {
+    color: #197e37;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.card p {
+    font-size: 13px;
+    color: #303944;
+    margin-bottom: 9px;
+}
+
+.card small {
+    color: #6b7480;
+    font-size: 11px;
+}
