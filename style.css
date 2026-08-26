@@ -233,3 +233,16 @@ select {
 .system-info b {
     color: white;
 }
+
+
+/* ================= HEADER ================= */
+
+.header {
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e4e9;
+    background: white;
+    padding: 0 18px;
+}
