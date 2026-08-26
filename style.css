@@ -378,3 +378,20 @@ select {
     color: #6b7480;
     font-size: 11px;
 }
+
+.status-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #dff5e6;
+    border: 1px solid #47b86a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    color: #15913c;
+}
+
+.safe-text {
+    color: #198d3d !important;
+}
