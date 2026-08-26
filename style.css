@@ -69,3 +69,38 @@ select {
     font-size: 12px;
     line-height: 1.5;
 }
+
+
+/* ================= MENU ================= */
+
+.menu {
+    border-bottom: 1px solid #293544;
+    padding-bottom: 20px;
+}
+
+.menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #d4dbe3;
+    padding: 13px 14px;
+    margin-bottom: 4px;
+    text-align: left;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.menu-item span {
+    width: 20px;
+    font-size: 18px;
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background: #155b3a;
+    color: #75e39b;
+}
