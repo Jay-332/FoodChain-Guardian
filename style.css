@@ -330,3 +330,21 @@ select {
     color: white;
     font-weight: bold;
 }
+
+
+/* ================= DASHBOARD CARDS ================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin: 22px 0;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e3e7ec;
+    border-radius: 11px;
+    padding: 18px;
+    min-height: 150px;
+}
