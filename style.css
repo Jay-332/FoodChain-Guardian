@@ -414,3 +414,12 @@ select {
 .metric h2 {
     color: #2879dd;
 }
+
+.humidity {
+    background: #f0e6ff;
+    color: #7134c9;
+}
+
+.metric .humidity + div h2 {
+    color: #7134c9;
+}
