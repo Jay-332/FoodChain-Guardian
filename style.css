@@ -22,3 +22,13 @@ select {
     display: flex;
     min-height: 100vh;
 }
+
+
+/* ================= MAIN CONTENT SHELL ================= */
+
+.main {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+    min-height: 100vh;
+    padding: 0 18px;
+}
