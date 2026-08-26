@@ -246,3 +246,26 @@ select {
     background: white;
     padding: 0 18px;
 }
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.hamburger {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.header h1 {
+    font-size: 28px;
+}
+
+.header p {
+    color: #65717e;
+    font-size: 13px;
+    margin-top: 4px;
+}
