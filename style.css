@@ -104,3 +104,34 @@ select {
     background: #155b3a;
     color: #75e39b;
 }
+
+
+/* ================= FILTERS ================= */
+
+.filters {
+    padding-top: 20px;
+}
+
+.filters h4,
+.system-info h4 {
+    color: #53cf78;
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.filters label {
+    display: block;
+    font-size: 12px;
+    margin: 12px 0 7px;
+    color: #e0e5eb;
+}
+
+.filters select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #344255;
+    background: #1b293c;
+    color: white;
+    outline: none;
+}
