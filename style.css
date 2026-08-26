@@ -47,3 +47,25 @@ select {
     bottom: 0;
     overflow-y: auto;
 }
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 8px 25px;
+}
+
+.brand-icon {
+    font-size: 42px;
+}
+
+.brand h2 {
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.brand p {
+    color: #b8c2cf;
+    font-size: 12px;
+    line-height: 1.5;
+}
