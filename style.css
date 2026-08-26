@@ -596,3 +596,79 @@ td {
     font-weight: bold;
     cursor: pointer;
 }
+
+
+/* ================= ALERTS ================= */
+
+.alert-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.alert-header a {
+    color: #1470d2;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.alert {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.alert-icon {
+    font-size: 19px;
+}
+
+.alert strong {
+    font-size: 12px;
+}
+
+.alert p {
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+.alert small {
+    font-size: 10px;
+    color: #6d747d;
+}
+
+.high-alert {
+    background: #fff0f0;
+}
+
+.high-alert strong {
+    color: #dd3535;
+}
+
+.medium-alert {
+    background: #fff8e8;
+}
+
+.medium-alert strong {
+    color: #df9a1a;
+}
+
+.low-alert {
+    background: #edf9f0;
+}
+
+.low-alert strong {
+    color: #228b43;
+}
+
+.new {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: #ffe2e2;
+    color: #d73636;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 10px;
+}
