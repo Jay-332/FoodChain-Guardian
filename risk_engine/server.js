@@ -20,6 +20,15 @@ app.post("/risk", (req, res) => {
         error: "Sensor data is required"
       });
     }
+    if (
+  typeof sensorData.temperature !== "number" ||
+  typeof sensorData.humidity !== "number" ||
+  typeof sensorData.storageHours !== "number"
+) {
+  return res.status(400).json({
+    error: "Temperature, humidity and storageHours must be numbers"
+  });
+}
 
     const risk = predictRisk({
       temperature: sensorData.temperature,
