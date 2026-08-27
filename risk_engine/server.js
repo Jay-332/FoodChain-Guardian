@@ -4,12 +4,17 @@ const { predictRisk } = require("./ml/model");
 const app = express();
 
 app.use(express.json());
+
+// Health check
 app.get("/health", (req, res) => {
   res.json({
     status: "OK",
-    service: "Food Chain Guardian Risk Engine"
+    service: "Food Chain Guardian Risk Engine",
+    timestamp: new Date().toISOString()
   });
 });
+
+// Version endpoint
 app.get("/version", (req, res) => {
   res.json({
     service: "Food Chain Guardian Risk Engine",
@@ -17,12 +22,14 @@ app.get("/version", (req, res) => {
   });
 });
 
+// Root endpoint
 app.get("/", (req, res) => {
   res.json({
     message: "Food Chain Guardian Risk Engine API is running"
   });
 });
 
+// Risk endpoint
 app.post("/risk", (req, res) => {
   try {
     const { foodType, sensorData } = req.body;
@@ -32,15 +39,16 @@ app.post("/risk", (req, res) => {
         error: "Sensor data is required"
       });
     }
+
     if (
-  typeof sensorData.temperature !== "number" ||
-  typeof sensorData.humidity !== "number" ||
-  typeof sensorData.storageHours !== "number"
-) {
-  return res.status(400).json({
-    error: "Temperature, humidity and storageHours must be numbers"
-  });
-}
+      typeof sensorData.temperature !== "number" ||
+      typeof sensorData.humidity !== "number" ||
+      typeof sensorData.storageHours !== "number"
+    ) {
+      return res.status(400).json({
+        error: "Temperature, humidity and storageHours must be numbers"
+      });
+    }
 
     const risk = predictRisk({
       temperature: sensorData.temperature,
@@ -56,7 +64,6 @@ app.post("/risk", (req, res) => {
         riskLevel: risk.riskLevel
       }
     });
-
   } catch (error) {
     res.status(400).json({
       error: error.message
