@@ -14,6 +14,8 @@ function getDb(dbPath = DB_PATH) {
   let db;
   try {
     db = new DatabaseSync(dbPath);
+    db.exec('PRAGMA foreign_keys = ON;');
+    db.exec('PRAGMA journal_mode = WAL;');
   } catch (err) {
     throw new Error(`getDb: could not open database at ${dbPath} — ${err.message}`);
   }
@@ -61,9 +63,14 @@ function initSchema(db) {
       description TEXT NOT NULL,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
-  `);
+ `);
+    const readingColumns = db.prepare('PRAGMA table_info(readings)').all();
+    if (!readingColumns.some(column => column.name === 'archived')) {
+      db.exec('ALTER TABLE readings ADD COLUMN archived INTEGER NOT NULL DEFAULT 0;');
+    }
 }
 
+  
 // ---------- Validation helpers ----------
 
 function isNonEmptyString(val) {
@@ -196,6 +203,66 @@ function getSummaryReport(db) {
     GROUP BY risk_level
   `).all();
 }
+function getReadingsByFoodType(db, foodType) {
+  if (!foodType || typeof foodType !== 'string') {
+    throw new Error('foodType must be a non-empty string');
+  }
+
+  try {
+    const stmt = db.prepare(
+      'SELECT * FROM readings WHERE food_type = ? ORDER BY created_at DESC'
+    );
+    return stmt.all(foodType);
+  } catch (err) {
+    throw new Error(`getReadingsByFoodType failed: ${err.message}`);
+  }
+}
+function getAlertsByDateRange(db, startDate, endDate) {
+  if (!startDate || !endDate) {
+    throw new Error(
+      'startDate and endDate are required (ISO format, e.g. 2026-08-20)'
+    );
+  }
+
+  if (new Date(startDate) > new Date(endDate)) {
+    throw new Error('startDate must be before endDate');
+  }
+
+  try {
+    const stmt = db.prepare(
+      `SELECT * FROM alerts
+       WHERE sent_at BETWEEN ? AND ?
+       ORDER BY sent_at ASC`
+    );
+
+    return stmt.all(
+      `${startDate} 00:00:00`,
+      `${endDate} 23:59:59`
+    );
+  } catch (err) {
+    throw new Error(`getAlertsByDateRange failed: ${err.message}`);
+  }
+}
+function archiveOldReadings(db, daysOld = 30) {
+  if (typeof daysOld !== 'number' || daysOld <= 0) {
+    throw new Error('daysOld must be a positive number');
+  }
+
+  try {
+    const stmt = db.prepare(
+      `UPDATE readings
+       SET archived = 1
+       WHERE created_at < datetime('now', ?)
+       AND archived = 0`
+    );
+
+    const result = stmt.run(`-${daysOld} days`);
+
+    return { archivedCount: result.changes };
+  } catch (err) {
+    throw new Error(`archiveOldReadings failed: ${err.message}`);
+  }
+}
 
 module.exports = {
   getDb,
@@ -205,6 +272,9 @@ module.exports = {
   insertAlert,
   logActivity,
   getReadings,
+  getReadingsByFoodType,
+  getAlertsByDateRange,
+  archiveOldReadings,
   getRiskResultById,
   getAlertsForRiskResult,
   getRecentAlerts,
