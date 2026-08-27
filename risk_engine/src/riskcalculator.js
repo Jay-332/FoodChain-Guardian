@@ -61,8 +61,10 @@ if (typeof temperature !== "number" || !Number.isFinite(temperature)) {
 if (typeof humidity !== "number" || !Number.isFinite(humidity)) {
   throw new Error("Humidity must be a valid number.");
 }
-  
-  const normalizedFoodType = foodType.trim().toLowerCase();
+if (typeof timeElapsedHours !== "number" || !Number.isFinite(timeElapsedHours)) {
+  throw new Error("Time elapsed must be a valid number.");
+}
+   const normalizedFoodType = foodType.trim().toLowerCase();
 const foodProfile = thresholds.food_profiles[normalizedFoodType];
 
   if (!foodProfile) {
