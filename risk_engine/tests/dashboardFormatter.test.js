@@ -184,3 +184,14 @@ try {
 } catch (error) {
   console.log("Missing risk result test:", error.message);
 }
+try {
+  formatDashboardResult(
+    "",
+    { temperature: 4, humidity: 65 },
+    { riskScore: 30, riskLevel: "Low" }
+  );
+
+  console.log("ERROR: Missing food item was accepted.");
+} catch (error) {
+  console.log("Missing food item test:", error.message);
+}
