@@ -110,3 +110,12 @@ Marks readings older than the specified number of days as archived instead of de
 
 Example:
 archiveOldReadings(db, 30);
+
+### Archived Readings
+
+The `readings` table has an `archived` column.
+
+- `0` = active reading
+- `1` = archived reading
+
+`archiveOldReadings(db, 30)` marks readings older than 30 days as archived. It does not delete them.
