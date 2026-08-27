@@ -1,3 +1,12 @@
+function validateFoodItem(foodType) {
+  if (typeof foodType !== "string" || foodType.trim() === "") {
+    throw new Error("Food item must be a valid name.");
+  }
+
+  return foodType.trim();
+}
+
+
 function getDashboardAlert(riskLevel) {
   const normalizedLevel = riskLevel.trim().toLowerCase();
 
@@ -14,7 +23,7 @@ function getDashboardAlert(riskLevel) {
 
 function formatDashboardResult(foodType, sensorData, riskResult) {
   return {
-    foodItem: foodType,
+    foodItem: validateFoodItem(foodType),
     temperature: sensorData.temperature,
     humidity: sensorData.humidity,
     riskPercentage: riskResult.riskScore,
