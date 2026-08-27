@@ -143,3 +143,14 @@ console.log(
     { riskScore: 30, riskLevel: "Low" }
   ).foodItem
 );
+try {
+  formatDashboardResult(
+    "unknownfood",
+    { temperature: 4, humidity: 65 },
+    { riskScore: 30, riskLevel: "Low" }
+  );
+
+  console.log("ERROR: Unknown food item was accepted.");
+} catch (error) {
+  console.log("Unknown food item test:", error.message);
+}
