@@ -228,3 +228,14 @@ try {
 } catch (error) {
   console.log("Non-numeric risk score test:", error.message);
 }
+try {
+  formatDashboardResult(
+    123,
+    { temperature: 4, humidity: 65 },
+    { riskScore: 30, riskLevel: "Low" }
+  );
+
+  console.log("ERROR: Non-string food item was accepted.");
+} catch (error) {
+  console.log("Non-string food item test:", error.message);
+}
