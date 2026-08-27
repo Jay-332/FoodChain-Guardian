@@ -118,3 +118,20 @@ try {
 } catch (error) {
   console.log("Invalid food item test:", error.message);
 }
+try {
+  formatDashboardResult(
+    "milk",
+    {
+      temperature: 4,
+      humidity: 65
+    },
+    {
+      riskScore: 30,
+      riskLevel: "Unknown"
+    }
+  );
+
+  console.log("ERROR: Invalid risk level was accepted.");
+} catch (error) {
+  console.log("Invalid risk level test:", error.message);
+}
