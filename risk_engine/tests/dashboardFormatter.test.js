@@ -217,3 +217,14 @@ try {
 } catch (error) {
   console.log("Non-numeric humidity test:", error.message);
 }
+try {
+  formatDashboardResult(
+    "milk",
+    { temperature: 4, humidity: 65 },
+    { riskScore: "high", riskLevel: "High" }
+  );
+
+  console.log("ERROR: Non-numeric risk score was accepted.");
+} catch (error) {
+  console.log("Non-numeric risk score test:", error.message);
+}
