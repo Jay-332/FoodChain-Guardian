@@ -100,12 +100,13 @@ const foodProfile = thresholds.food_profiles[normalizedFoodType];
   foodType: normalizedFoodType,
   foodCategory: foodProfile.category,
   riskScore: Number(riskScore.toFixed(2)),
+  riskLevel: classifyRisk(riskScore),
   components: {
-      temperatureRisk: Number(temperatureRisk.toFixed(2)),
-      humidityRisk: Number(humidityRisk.toFixed(2)),
-      timeRisk: Number(timeRisk.toFixed(2))
-    }
-  };
+    temperatureRisk: Number(temperatureRisk.toFixed(2)),
+    humidityRisk: Number(humidityRisk.toFixed(2)),
+    timeRisk: Number(timeRisk.toFixed(2))
+  }
+};
 }
 
 function classifyRisk(riskScore) {
