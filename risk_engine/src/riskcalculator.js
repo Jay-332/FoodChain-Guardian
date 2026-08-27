@@ -55,6 +55,9 @@ function calculateRisk({
   if (typeof foodType !== "string" || foodType.trim() === "") {
   throw new Error("Food type is required.");
 }
+if (typeof temperature !== "number" || !Number.isFinite(temperature)) {
+  throw new Error("Temperature must be a valid number.");
+}
   
   const normalizedFoodType = foodType.trim().toLowerCase();
 const foodProfile = thresholds.food_profiles[normalizedFoodType];
