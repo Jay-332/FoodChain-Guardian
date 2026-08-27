@@ -135,3 +135,11 @@ try {
 } catch (error) {
   console.log("Invalid risk level test:", error.message);
 }
+console.log(
+  "Food name normalization test:",
+  formatDashboardResult(
+    "  milk  ",
+    { temperature: 4, humidity: 65 },
+    { riskScore: 30, riskLevel: "Low" }
+  ).foodItem
+);
