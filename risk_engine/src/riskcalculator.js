@@ -1,3 +1,5 @@
+const thresholds = require("../data/thresholds.json")
+
 const WEIGHTS = {
   temperature: 0.4,
   humidity: 0.3,
@@ -38,7 +40,7 @@ function calculateRisk({
   temperature,
   humidity,
   timeElapsedHours,
-  safeMaxTemperature = 5
+  safeMaxTemperature = thresholds.general.refrigerated_max_c
 }) {
   if (
     !Number.isFinite(temperature) ||
