@@ -27,7 +27,7 @@ function predictRisk(features) {
   }
 
   return {
-    riskScore: Number(score.toFixed(2)),
+    riskPercentage: Number(score.toFixed(2)),
     riskLevel
   };
 }

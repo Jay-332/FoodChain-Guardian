@@ -1,27 +1,41 @@
 const express = require("express");
-const { calculateRiskResponse } = require("./index");
+const { predictRisk } = require("./ml/model");
 
 const app = express();
 
 app.use(express.json());
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
   res.json({
     message: "Food Chain Guardian Risk Engine API is running"
   });
 });
 
-app.post("/risk", function (req, res) {
+app.post("/risk", (req, res) => {
   try {
-    const { foodType, sensorData, riskResult } = req.body;
+    const { foodType, sensorData } = req.body;
 
-    const result = calculateRiskResponse(
-      foodType,
-      sensorData,
-      riskResult
-    );
+    if (!sensorData) {
+      return res.status(400).json({
+        error: "Sensor data is required"
+      });
+    }
 
-    res.json(result);
+    const risk = predictRisk({
+      temperature: sensorData.temperature,
+      humidity: sensorData.humidity,
+      storageHours: sensorData.storageHours
+    });
+
+    res.json({
+      foodType: foodType,
+      sensorData: sensorData,
+      risk: {
+        riskPercentage: risk.riskPercentage,
+        riskLevel: risk.riskLevel
+      }
+    });
+
   } catch (error) {
     res.status(400).json({
       error: error.message
@@ -31,6 +45,6 @@ app.post("/risk", function (req, res) {
 
 const PORT = 3000;
 
-app.listen(PORT, function () {
+app.listen(PORT, () => {
   console.log("Risk Engine API running on port " + PORT);
 });
