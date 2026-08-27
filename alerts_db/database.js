@@ -14,6 +14,8 @@ function getDb(dbPath = DB_PATH) {
   let db;
   try {
     db = new DatabaseSync(dbPath);
+    db.exec('PRAGMA foreign_keys = ON;');
+    db.exec('PRAGMA journal_mode = WAL;');
   } catch (err) {
     throw new Error(`getDb: could not open database at ${dbPath} — ${err.message}`);
   }
@@ -62,6 +64,22 @@ function initSchema(db) {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
+  db.exec(`
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_alert
+  ON alerts(risk_result_id, alert_type);
+
+  CREATE INDEX IF NOT EXISTS idx_risk_results_reading_id
+  ON risk_results(reading_id);
+
+  CREATE INDEX IF NOT EXISTS idx_alerts_risk_result_id
+  ON alerts(risk_result_id);
+
+  CREATE INDEX IF NOT EXISTS idx_readings_created_at
+  ON readings(created_at);
+
+  CREATE INDEX IF NOT EXISTS idx_activity_log_event_type
+  ON activity_log(event_type);
+`);
 }
 
 // ---------- Validation helpers ----------
