@@ -63,36 +63,14 @@ function initSchema(db) {
       description TEXT NOT NULL,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
-  `);
-  db.exec(`
-  CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_alert
-  ON alerts(risk_result_id, alert_type);
-
-  CREATE INDEX IF NOT EXISTS idx_risk_results_reading_id
-  ON risk_results(reading_id);
-
-  CREATE INDEX IF NOT EXISTS idx_alerts_risk_result_id
-  ON alerts(risk_result_id);
-
-  CREATE INDEX IF NOT EXISTS idx_readings_created_at
-  ON readings(created_at);
-
-  CREATE INDEX IF NOT EXISTS idx_activity_log_event_type
-  ON activity_log(event_type);
-`);
-
-const readingColumns = db.prepare('PRAGMA table_info(readings)').all();
-
-if (!readingColumns.some(column => column.name === 'archived')) {
-  db.exec(`
-    ALTER TABLE readings
-    ADD COLUMN archived INTEGER NOT NULL DEFAULT 0;
-  `);
+ `);
+    const readingColumns = db.prepare('PRAGMA table_info(readings)').all();
+    if (!readingColumns.some(column => column.name === 'archived')) {
+      db.exec('ALTER TABLE readings ADD COLUMN archived INTEGER NOT NULL DEFAULT 0;');
+    }
 }
 
-
-}
-
+  
 // ---------- Validation helpers ----------
 
 function isNonEmptyString(val) {
