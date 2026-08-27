@@ -38,33 +38,18 @@
             </button>
 
             <button class="menu-item">
-                <span>▣</span>
-                Live Monitor
+                <span>◫</span>
+                Analytics
             </button>
 
             <button class="menu-item">
-                <span>⌁</span>
-                Food Summary
+                <span>◉</span>
+                Sensor Health
             </button>
 
             <button class="menu-item">
-                <span>♧</span>
+                <span>⚑</span>
                 Alerts
-            </button>
-
-            <button class="menu-item">
-                <span>◷</span>
-                History & Logs
-            </button>
-
-            <button class="menu-item">
-                <span>▤</span>
-                Reports
-            </button>
-
-            <button class="menu-item">
-                <span>⚙</span>
-                Settings
             </button>
 
         </nav>
@@ -73,25 +58,6 @@
         <div class="filters">
 
             <h4>FILTERS</h4>
-
-            <label>Date Range</label>
-
-            <select id="dateFilter">
-                <option>Today</option>
-                <option>Last 7 Days</option>
-                <option>Last 30 Days</option>
-            </select>
-
-            <div class="auto-update">
-
-                <span>Auto Update</span>
-
-                <label class="switch">
-                    <input type="checkbox" id="autoUpdate" checked>
-                    <span class="slider"></span>
-                </label>
-
-            </div>
 
             <button class="refresh-btn" id="refreshBtn">
                 ↻ &nbsp; Refresh Now
@@ -107,11 +73,6 @@
             <div>
                 <span>Version</span>
                 <b>1.0.1</b>
-            </div>
-
-            <div>
-                <span>Database</span>
-                <b>SQLite</b>
             </div>
 
             <div>
@@ -162,13 +123,6 @@
                         May 26, 2025
                     </small>
 
-                </div>
-
-                <div class="notification">
-                    <span>3</span>
-                </div>
-
-                <div class="profile">
                 </div>
 
             </div>
@@ -319,10 +273,9 @@
 
         </section>
 
-
         <!-- ================= CHARTS ================= -->
 
-        <section class="charts">
+        <section class="charts" id="chartsSection">
 
             <!-- TEMPERATURE CHART -->
 
