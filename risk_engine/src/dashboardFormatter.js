@@ -20,6 +20,11 @@ function formatDashboardResult(foodType, sensorData, riskResult) {
     riskPercentage: riskResult.riskScore,
     riskLevel: riskResult.riskLevel,
     alert: getDashboardAlert(riskResult.riskLevel),
+    alertMessage: getDashboardAlert(riskResult.riskLevel) === "HIGH"
+  ? "Temperature or humidity requires immediate attention."
+  : getDashboardAlert(riskResult.riskLevel) === "MEDIUM"
+    ? "Food conditions should be monitored."
+    : "Food conditions are stable.",
     lastUpdated: new Date().toISOString()
   };
 }
