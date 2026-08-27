@@ -173,3 +173,14 @@ try {
 } catch (error) {
   console.log("Missing sensor data test:", error.message);
 }
+try {
+  formatDashboardResult(
+    "milk",
+    { temperature: 4, humidity: 65 },
+    null
+  );
+
+  console.log("ERROR: Missing risk result was accepted.");
+} catch (error) {
+  console.log("Missing risk result test:", error.message);
+}
