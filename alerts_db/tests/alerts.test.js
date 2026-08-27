@@ -219,3 +219,29 @@ test('archiveOldReadings rejects an invalid number of days', () => {
     'daysOld must be a positive number'
   );
 });
+
+test('insertReading trims food_type', () => {
+  const id = insertReading(db, {
+    food_type: '  chicken  ',
+    temperature: 5,
+    humidity: 70,
+    time_elapsed: 2
+  });
+
+  const reading = db.prepare(
+    'SELECT food_type FROM readings WHERE id = ?'
+  ).get(id);
+
+  expect(reading.food_type).toBe('chicken');
+});
+
+test('insertReading rejects food_type longer than 50 characters', () => {
+  expect(() =>
+    insertReading(db, {
+      food_type: 'a'.repeat(51),
+      temperature: 5,
+      humidity: 70,
+      time_elapsed: 2
+    })
+  ).toThrow('food_type must be 50 characters or less');
+});

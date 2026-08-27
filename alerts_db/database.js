@@ -85,8 +85,14 @@ function isFiniteNumber(val) {
 
 function insertReading(db, { food_type, temperature, humidity, time_elapsed }) {
   if (!isNonEmptyString(food_type)) {
-    throw new Error(`insertReading: food_type must be a non-empty string, got: ${JSON.stringify(food_type)}`);
-  }
+  throw new Error(`insertReading: food_type must be a non-empty string, got: ${JSON.stringify(food_type)}`);
+}
+
+const cleanFoodType = food_type.trim();
+
+if (cleanFoodType.length > 50) {
+  throw new Error('insertReading: food_type must be 50 characters or less');
+}
   if (!isFiniteNumber(temperature) || !isFiniteNumber(humidity) || !isFiniteNumber(time_elapsed)) {
     throw new Error(
       `insertReading: temperature, humidity, and time_elapsed must all be numbers ` +
@@ -99,7 +105,7 @@ function insertReading(db, { food_type, temperature, humidity, time_elapsed }) {
       INSERT INTO readings (food_type, temperature, humidity, time_elapsed)
       VALUES (?, ?, ?, ?)
     `);
-    const info = stmt.run(food_type, temperature, humidity, time_elapsed);
+    const info = stmt.run(cleanFoodType, temperature, humidity, time_elapsed);
     return info.lastInsertRowid;
   } catch (err) {
     throw new Error(`insertReading: database write failed — ${err.message}`);
