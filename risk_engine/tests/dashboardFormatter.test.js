@@ -195,3 +195,14 @@ try {
 } catch (error) {
   console.log("Missing food item test:", error.message);
 }
+try {
+  formatDashboardResult(
+    "milk",
+    { temperature: "cold", humidity: 65 },
+    { riskScore: 30, riskLevel: "Low" }
+  );
+
+  console.log("ERROR: Non-numeric temperature was accepted.");
+} catch (error) {
+  console.log("Non-numeric temperature test:", error.message);
+}
