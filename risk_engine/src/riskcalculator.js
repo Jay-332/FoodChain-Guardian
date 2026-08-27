@@ -97,8 +97,10 @@ const foodProfile = thresholds.food_profiles[normalizedFoodType];
     timeRisk * WEIGHTS.time;
 
   return {
-    riskScore: Number(riskScore.toFixed(2)),
-    components: {
+  foodType: normalizedFoodType,
+  foodCategory: foodProfile.category,
+  riskScore: Number(riskScore.toFixed(2)),
+  components: {
       temperatureRisk: Number(temperatureRisk.toFixed(2)),
       humidityRisk: Number(humidityRisk.toFixed(2)),
       timeRisk: Number(timeRisk.toFixed(2))
