@@ -1,5 +1,6 @@
 const { formatDashboardResult } = require("../src/dashboardFormatter");
 
+// Test 1: Low risk
 const lowResult = formatDashboardResult(
   "milk",
   {
@@ -12,6 +13,9 @@ const lowResult = formatDashboardResult(
   }
 );
 
+console.log("Low alert:", lowResult.alert);
+
+// Test 2: Medium risk
 const mediumResult = formatDashboardResult(
   "chicken",
   {
@@ -24,6 +28,9 @@ const mediumResult = formatDashboardResult(
   }
 );
 
+console.log("Medium alert:", mediumResult.alert);
+
+// Test 3: High risk
 const highResult = formatDashboardResult(
   "fish",
   {
@@ -36,9 +43,9 @@ const highResult = formatDashboardResult(
   }
 );
 
-console.log("Low alert:", lowResult.alert);
-console.log("Medium alert:", mediumResult.alert);
 console.log("High alert:", highResult.alert);
+
+// Test 4: Invalid risk percentage
 try {
   formatDashboardResult(
     "milk",
@@ -53,4 +60,22 @@ try {
   );
 } catch (error) {
   console.log("Invalid risk percentage test:", error.message);
+}
+
+// Test 5: Invalid humidity
+try {
+  formatDashboardResult(
+    "milk",
+    {
+      temperature: 4,
+      humidity: 120
+    },
+    {
+      riskScore: 30,
+      riskLevel: "Low"
+    }
+  );
+  console.log("ERROR: Invalid humidity was accepted.");
+} catch (error) {
+  console.log("Invalid humidity test:", error.message);
 }
