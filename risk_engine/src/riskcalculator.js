@@ -70,8 +70,26 @@ function calculateRisk({
       timeRisk: Number(timeRisk.toFixed(2))
     }
   };
+}  // closes calculateRisk()
+
+function classifyRisk(riskScore) {
+  if (!Number.isFinite(riskScore)) {
+    throw new Error("Risk score must be a number.");
+  }
+
+  if (riskScore < 30) {
+    return "SAFE";
+  }
+
+  if (riskScore < 60) {
+    return "MEDIUM";
+  }
+
+  return "HIGH";
 }
 
 module.exports = {
-  calculateRisk
+  calculateRisk,
+  classifyRisk
 };
+
