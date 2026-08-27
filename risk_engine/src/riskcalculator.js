@@ -47,6 +47,13 @@ function calculateRisk({
   ) {
     throw new Error("Temperature, humidity and elapsed time must be numbers.");
   }
+  if (humidity < 0 || humidity > 100) {
+  throw new Error("Humidity must be between 0 and 100 percent.");
+}
+
+if (timeElapsedHours < 0) {
+  throw new Error("Elapsed time cannot be negative.");
+}
 
   const temperatureRisk = calculateTemperatureRisk(
     temperature,
