@@ -10,6 +10,12 @@ app.get("/health", (req, res) => {
     service: "Food Chain Guardian Risk Engine"
   });
 });
+app.get("/version", (req, res) => {
+  res.json({
+    service: "Food Chain Guardian Risk Engine",
+    version: "1.0.0"
+  });
+});
 
 app.get("/", (req, res) => {
   res.json({
