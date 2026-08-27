@@ -39,3 +39,18 @@ const highResult = formatDashboardResult(
 console.log("Low alert:", lowResult.alert);
 console.log("Medium alert:", mediumResult.alert);
 console.log("High alert:", highResult.alert);
+try {
+  formatDashboardResult(
+    "milk",
+    {
+      temperature: 4,
+      humidity: 65
+    },
+    {
+      riskScore: 120,
+      riskLevel: "High"
+    }
+  );
+} catch (error) {
+  console.log("Invalid risk percentage test:", error.message);
+}
