@@ -1,0 +1,77 @@
+const WEIGHTS = {
+  temperature: 0.4,
+  humidity: 0.3,
+  time: 0.3
+};
+
+function clamp(value, min = 0, max = 100) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function calculateTemperatureRisk(temperature, safeMaxTemperature) {
+  if (temperature <= safeMaxTemperature) {
+    return 0;
+  }
+
+  const excess = temperature - safeMaxTemperature;
+
+  return clamp(excess * 20);
+}
+
+function calculateHumidityRisk(humidity) {
+  if (humidity <= 60) {
+    return 0;
+  }
+
+  return clamp((humidity - 60) * 2.5);
+}
+
+function calculateTimeRisk(timeElapsedHours) {
+  if (timeElapsedHours <= 2) {
+    return 0;
+  }
+
+  return clamp((timeElapsedHours - 2) * 10);
+}
+
+function calculateRisk({
+  temperature,
+  humidity,
+  timeElapsedHours,
+  safeMaxTemperature = 5
+}) {
+  if (
+    !Number.isFinite(temperature) ||
+    !Number.isFinite(humidity) ||
+    !Number.isFinite(timeElapsedHours)
+  ) {
+    throw new Error("Temperature, humidity and elapsed time must be numbers.");
+  }
+
+  const temperatureRisk = calculateTemperatureRisk(
+    temperature,
+    safeMaxTemperature
+  );
+
+  const humidityRisk = calculateHumidityRisk(humidity);
+
+  const timeRisk = calculateTimeRisk(timeElapsedHours);
+
+  const riskScore =
+    temperatureRisk * WEIGHTS.temperature +
+    humidityRisk * WEIGHTS.humidity +
+    timeRisk * WEIGHTS.time;
+
+  return {
+    riskScore: Number(riskScore.toFixed(2)),
+    components: {
+      temperatureRisk: Number(temperatureRisk.toFixed(2)),
+      humidityRisk: Number(humidityRisk.toFixed(2)),
+      timeRisk: Number(timeRisk.toFixed(2))
+    }
+  };
+}
+
+module.exports = {
+  calculateRisk
+};
