@@ -1,4 +1,4 @@
-const thresholds = require("../data/thresholds.json")
+const thresholds = require("../data/thresholds.json");
 
 const WEIGHTS = {
   temperature: 0.4,
@@ -35,13 +35,32 @@ function calculateTimeRisk(timeElapsedHours) {
 
   return clamp((timeElapsedHours - 2) * 10);
 }
+function getFoodProfile(foodType) {
+  const foodProfile = thresholds.food_profiles[foodType];
+
+  if (!foodProfile) {
+    throw new Error(`Unknown food type: ${foodType}`);
+  }
+
+  return foodProfile;
+}
 
 function calculateRisk({
+  foodType,
   temperature,
   humidity,
   timeElapsedHours,
-  safeMaxTemperature = thresholds.general.refrigerated_max_c
+  safeMaxTemperature
 }) {
+  const foodProfile = thresholds.food_profiles[foodType];
+
+  if (!foodProfile) {
+    throw new Error(`Unknown food type: ${foodType}`);
+  }
+
+  const temperatureLimit =
+    safeMaxTemperature ?? foodProfile.recommended_max_storage_c;
+
   if (
     !Number.isFinite(temperature) ||
     !Number.isFinite(humidity) ||
@@ -49,17 +68,18 @@ function calculateRisk({
   ) {
     throw new Error("Temperature, humidity and elapsed time must be numbers.");
   }
-  if (humidity < 0 || humidity > 100) {
-  throw new Error("Humidity must be between 0 and 100 percent.");
-}
 
-if (timeElapsedHours < 0) {
-  throw new Error("Elapsed time cannot be negative.");
-}
+  if (humidity < 0 || humidity > 100) {
+    throw new Error("Humidity must be between 0 and 100 percent.");
+  }
+
+  if (timeElapsedHours < 0) {
+    throw new Error("Elapsed time cannot be negative.");
+  }
 
   const temperatureRisk = calculateTemperatureRisk(
     temperature,
-    safeMaxTemperature
+    temperatureLimit
   );
 
   const humidityRisk = calculateHumidityRisk(humidity);
@@ -79,7 +99,7 @@ if (timeElapsedHours < 0) {
       timeRisk: Number(timeRisk.toFixed(2))
     }
   };
-}  // closes calculateRisk()
+}
 
 function classifyRisk(riskScore) {
   if (!Number.isFinite(riskScore)) {
@@ -101,4 +121,3 @@ module.exports = {
   calculateRisk,
   classifyRisk
 };
-
