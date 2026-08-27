@@ -52,6 +52,10 @@ function calculateRisk({
   timeElapsedHours,
   safeMaxTemperature
 }) {
+  if (typeof foodType !== "string" || foodType.trim() === "") {
+  throw new Error("Food type is required.");
+}
+  
   const foodProfile = thresholds.food_profiles[foodType];
 
   if (!foodProfile) {
