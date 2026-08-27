@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "purpose": "Reference thresholds for the FoodChain Guardian risk engine",
+    "temperature_unit": "C",
+    "humidity_unit": "percent",
+    "time_unit": "hours"
+  },
+  "general": {
+    "refrigerated_max_c": 5,
+    "frozen_max_c": -18
+  },
+  "food_profiles": {
+    "cut_fruits": {
+      "category": "high_risk_perishable",
+      "recommended_max_storage_c": 5
+    },
+    "vegetables": {
+      "category": "perishable",
+      "recommended_max_storage_c": 5
+    },
+    "dairy": {
+      "category": "high_risk_perishable",
+      "recommended_max_storage_c": 5
+    },
+    "meat": {
+      "category": "high_risk_perishable",
+      "recommended_max_storage_c": 5,
+      "frozen_max_c": -18
+    },
+    "fish": {
+      "category": "high_risk_perishable",
+      "recommended_max_storage_c": 5,
+      "frozen_max_c": -18
+    }
+  }
+}
