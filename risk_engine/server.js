@@ -54,6 +54,17 @@ app.post("/risk", (req, res) => {
         error: "Temperature, humidity and storageHours must be numbers"
       });
     }
+    if (sensorData.humidity < 0 || sensorData.humidity > 100) {
+  return res.status(400).json({
+    error: "Humidity must be between 0 and 100"
+  });
+}
+
+if (sensorData.storageHours < 0) {
+  return res.status(400).json({
+    error: "Storage hours cannot be negative"
+  });
+}
 
     const risk = predictRisk({
       temperature: sensorData.temperature,
