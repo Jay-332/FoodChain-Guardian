@@ -110,3 +110,25 @@ Marks readings older than the specified number of days as archived instead of de
 
 Example:
 archiveOldReadings(db, 30);
+
+### Archived Readings
+
+The `readings` table has an `archived` column.
+
+- `0` = active reading
+- `1` = archived reading
+
+`archiveOldReadings(db, 30)` marks readings older than 30 days as archived. It does not delete them.
+
+## Input Validation
+
+When using `insertReading()`:
+
+- `food_type` must be a non-empty string
+-  spaces are removed from `food_type`
+- `food_type` can't be longer than 50 characters
+- `temperature` must be a finite number
+- `humidity` must be a finite number
+- `time_elapsed` must be a finite number
+
+Invalid values will cause `insertReading()` to return an error instead of saving bad data

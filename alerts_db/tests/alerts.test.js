@@ -110,6 +110,39 @@ test('insertReading rejects a non-numeric temperature', () => {
   }).toThrow(/temperature/);
 });
 
+test('insertReading rejects NaN temperature', () => {
+  expect(() => {
+    insertReading(db, {
+      food_type: 'milk',
+      temperature: NaN,
+      humidity: 40,
+      time_elapsed: 1
+    });
+  }).toThrow(/temperature/);
+});
+
+test('insertReading rejects Infinity temperature', () => {
+  expect(() => {
+    insertReading(db, {
+      food_type: 'milk',
+      temperature: Infinity,
+      humidity: 40,
+      time_elapsed: 1
+    });
+  }).toThrow(/temperature/);
+});
+
+test('insertReading rejects -Infinity temperature', () => {
+  expect(() => {
+    insertReading(db, {
+      food_type: 'milk',
+      temperature: -Infinity,
+      humidity: 40,
+      time_elapsed: 1
+    });
+  }).toThrow(/temperature/);
+});
+
 test('insertRiskResult rejects an invalid risk_level', () => {
   const readingId = insertReading(db, { food_type: 'milk', temperature: 5, humidity: 40, time_elapsed: 1 });
   expect(() => {
@@ -218,4 +251,30 @@ test('archiveOldReadings rejects an invalid number of days', () => {
   expect(() => archiveOldReadings(db, 0)).toThrow(
     'daysOld must be a positive number'
   );
+});
+
+test('insertReading trims food_type', () => {
+  const id = insertReading(db, {
+    food_type: '  chicken  ',
+    temperature: 5,
+    humidity: 70,
+    time_elapsed: 2
+  });
+
+  const reading = db.prepare(
+    'SELECT food_type FROM readings WHERE id = ?'
+  ).get(id);
+
+  expect(reading.food_type).toBe('chicken');
+});
+
+test('insertReading rejects food_type longer than 50 characters', () => {
+  expect(() =>
+    insertReading(db, {
+      food_type: 'a'.repeat(51),
+      temperature: 5,
+      humidity: 70,
+      time_elapsed: 2
+    })
+  ).toThrow('food_type must be 50 characters or less');
 });
