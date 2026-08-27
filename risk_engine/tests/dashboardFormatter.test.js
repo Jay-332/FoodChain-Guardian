@@ -162,3 +162,14 @@ console.log(
     { riskScore: 30, riskLevel: "Low" }
   ).foodItem
 );
+try {
+  formatDashboardResult(
+    "milk",
+    null,
+    { riskScore: 30, riskLevel: "Low" }
+  );
+
+  console.log("ERROR: Missing sensor data was accepted.");
+} catch (error) {
+  console.log("Missing sensor data test:", error.message);
+}
