@@ -206,3 +206,14 @@ try {
 } catch (error) {
   console.log("Non-numeric temperature test:", error.message);
 }
+try {
+  formatDashboardResult(
+    "milk",
+    { temperature: 4, humidity: "high" },
+    { riskScore: 30, riskLevel: "Low" }
+  );
+
+  console.log("ERROR: Non-numeric humidity was accepted.");
+} catch (error) {
+  console.log("Non-numeric humidity test:", error.message);
+}
