@@ -33,6 +33,11 @@ app.get("/", (req, res) => {
 app.post("/risk", (req, res) => {
   try {
     const { foodType, sensorData } = req.body;
+    if (!foodType || typeof foodType !== "string") {
+  return res.status(400).json({
+    error: "Food type is required and must be a string"
+  });
+}
 
     if (!sensorData) {
       return res.status(400).json({
