@@ -154,3 +154,11 @@ try {
 } catch (error) {
   console.log("Unknown food item test:", error.message);
 }
+console.log(
+  "Food normalization test:",
+  formatDashboardResult(
+    "  MILK  ",
+    { temperature: 4, humidity: 65 },
+    { riskScore: 30, riskLevel: "Low" }
+  ).foodItem
+);
