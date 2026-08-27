@@ -6,7 +6,6 @@ function validateFoodItem(foodType) {
   return foodType.trim();
 }
 
-
 function getDashboardAlert(riskLevel) {
   const normalizedLevel = riskLevel.trim().toLowerCase();
 
@@ -22,6 +21,14 @@ function getDashboardAlert(riskLevel) {
 }
 
 function formatDashboardResult(foodType, sensorData, riskResult) {
+  if (!sensorData || typeof sensorData !== "object") {
+    throw new Error("Sensor data is required.");
+  }
+
+  if (!riskResult || typeof riskResult !== "object") {
+    throw new Error("Risk result is required.");
+  }
+
   return {
     foodItem: validateFoodItem(foodType),
     temperature: sensorData.temperature,
@@ -30,10 +37,10 @@ function formatDashboardResult(foodType, sensorData, riskResult) {
     riskLevel: riskResult.riskLevel,
     alert: getDashboardAlert(riskResult.riskLevel),
     alertMessage: getDashboardAlert(riskResult.riskLevel) === "HIGH"
-  ? "Temperature or humidity requires immediate attention."
-  : getDashboardAlert(riskResult.riskLevel) === "MEDIUM"
-    ? "Food conditions should be monitored."
-    : "Food conditions are stable.",
+      ? "Temperature or humidity requires immediate attention."
+      : getDashboardAlert(riskResult.riskLevel) === "MEDIUM"
+        ? "Food conditions should be monitored."
+        : "Food conditions are stable.",
     lastUpdated: new Date().toISOString()
   };
 }
