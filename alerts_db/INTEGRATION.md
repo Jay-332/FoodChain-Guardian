@@ -91,3 +91,22 @@ usually say exactly what's wrong.
 Every function here throws a specific, readable error message rather than failing
 silently — read the message first, it usually tells you exactly which field was
 wrong. If you're stuck, ping the alerts_db owner with the exact error text.
+## New Query and Archive Functions
+
+### getReadingsByFoodType(db, foodType)
+Returns all readings for a specific food type, newest first.
+
+Example:
+getReadingsByFoodType(db, 'milk');
+
+### getAlertsByDateRange(db, startDate, endDate)
+Returns alerts created between the given dates.
+
+Example:
+getAlertsByDateRange(db, '2026-08-01', '2026-08-27');
+
+### archiveOldReadings(db, daysOld)
+Marks readings older than the specified number of days as archived instead of deleting them.
+
+Example:
+archiveOldReadings(db, 30);
