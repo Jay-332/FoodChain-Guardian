@@ -61,6 +61,9 @@ if (typeof temperature !== "number" || !Number.isFinite(temperature)) {
 if (typeof humidity !== "number" || !Number.isFinite(humidity)) {
   throw new Error("Humidity must be a valid number.");
 }
+if (humidity < 0 || humidity > 100) {
+  throw new Error("Humidity must be between 0 and 100.");
+}
 if (typeof timeElapsedHours !== "number" || !Number.isFinite(timeElapsedHours)) {
   throw new Error("Time elapsed must be a valid number.");
 }
