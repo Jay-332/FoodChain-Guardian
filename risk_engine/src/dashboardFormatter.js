@@ -40,13 +40,16 @@ if (result.temperature < -50 || result.temperature > 100) {
 if (typeof result.humidity !== "number") {
   throw new Error("Humidity must be a number.");
 }
+if (result.humidity < 0 || result.humidity > 100) {
+  throw new Error("Humidity must be between 0 and 100.");
+}
 
   return result;
 }
 
 function validateFoodItem(foodType) {
   if (typeof foodType !== "string" || foodType.trim() === "") {
-    throw new Error("Food item must be a valid name.");
+    throw new Error("Food item must be  a valid name.");
   }
 
   return foodType.trim();
