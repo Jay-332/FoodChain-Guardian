@@ -1,3 +1,5 @@
+const { mapDashboardFoodType } = require("./foodtypeMapper");
+
 const thresholds = require("../data/thresholds.json");
 
 const WEIGHTS = {
@@ -68,7 +70,8 @@ if (typeof timeElapsedHours !== "number" || !Number.isFinite(timeElapsedHours)) 
   throw new Error("Time elapsed must be a valid number.");
 }
    const normalizedFoodType = foodType.trim().toLowerCase();
-const foodProfile = thresholds.food_profiles[normalizedFoodType];
+   const mappedFoodType = mapDashboardFoodType(normalizedFoodType);
+const foodProfile = thresholds.food_profiles[mappedFoodType];
 
   if (!foodProfile) {
     throw new Error(`Unknown food type: ${foodType}`);
