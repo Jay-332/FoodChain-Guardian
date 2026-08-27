@@ -3,72 +3,12 @@ const refreshButton = document.getElementById("refreshBtn");
 const lastUpdated = document.getElementById("lastUpdated");
 const clock = document.getElementById("clock");
 const date = document.getElementById("date");
-const dropZone = document.getElementById("dropZone");
-const imageInput = document.getElementById("imageInput");
-const uploadedImagePreview = document.getElementById("uploadedImagePreview");
-const imagePreviewWrapper = document.getElementById("imagePreviewWrapper");
 const chartsSection = document.getElementById("chartsSection");
 
 function showCharts() {
     if (chartsSection) {
         chartsSection.classList.add("visible");
     }
-}
-
-function handleImageFile(file) {
-    if (!file || !file.type.startsWith("image/")) {
-        return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-        if (uploadedImagePreview) {
-            uploadedImagePreview.src = event.target.result;
-        }
-
-        if (imagePreviewWrapper) {
-            imagePreviewWrapper.hidden = false;
-        }
-
-        showCharts();
-    };
-
-    reader.readAsDataURL(file);
-}
-
-if (dropZone && imageInput) {
-    dropZone.addEventListener("click", () => imageInput.click());
-    dropZone.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            imageInput.click();
-        }
-    });
-
-    imageInput.addEventListener("change", (event) => {
-        const file = event.target.files[0];
-        handleImageFile(file);
-    });
-
-    ["dragenter", "dragover"].forEach((eventName) => {
-        dropZone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            dropZone.classList.add("dragover");
-        });
-    });
-
-    ["dragleave", "drop"].forEach((eventName) => {
-        dropZone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            dropZone.classList.remove("dragover");
-        });
-    });
-
-    dropZone.addEventListener("drop", (event) => {
-        const file = event.dataTransfer.files[0];
-        handleImageFile(file);
-    });
 }
 
 function updateClockAndDate() {
@@ -215,3 +155,4 @@ function initCharts() {
 }
 
 initCharts();
+showCharts();
