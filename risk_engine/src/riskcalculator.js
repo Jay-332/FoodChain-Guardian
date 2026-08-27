@@ -56,7 +56,8 @@ function calculateRisk({
   throw new Error("Food type is required.");
 }
   
-  const foodProfile = thresholds.food_profiles[foodType];
+  const normalizedFoodType = foodType.trim().toLowerCase();
+const foodProfile = thresholds.food_profiles[normalizedFoodType];
 
   if (!foodProfile) {
     throw new Error(`Unknown food type: ${foodType}`);
