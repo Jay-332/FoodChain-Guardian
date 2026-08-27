@@ -110,6 +110,39 @@ test('insertReading rejects a non-numeric temperature', () => {
   }).toThrow(/temperature/);
 });
 
+test('insertReading rejects NaN temperature', () => {
+  expect(() => {
+    insertReading(db, {
+      food_type: 'milk',
+      temperature: NaN,
+      humidity: 40,
+      time_elapsed: 1
+    });
+  }).toThrow(/temperature/);
+});
+
+test('insertReading rejects Infinity temperature', () => {
+  expect(() => {
+    insertReading(db, {
+      food_type: 'milk',
+      temperature: Infinity,
+      humidity: 40,
+      time_elapsed: 1
+    });
+  }).toThrow(/temperature/);
+});
+
+test('insertReading rejects -Infinity temperature', () => {
+  expect(() => {
+    insertReading(db, {
+      food_type: 'milk',
+      temperature: -Infinity,
+      humidity: 40,
+      time_elapsed: 1
+    });
+  }).toThrow(/temperature/);
+});
+
 test('insertRiskResult rejects an invalid risk_level', () => {
   const readingId = insertReading(db, { food_type: 'milk', temperature: 5, humidity: 40, time_elapsed: 1 });
   expect(() => {
