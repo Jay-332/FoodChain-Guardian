@@ -58,6 +58,8 @@ try {
       riskLevel: "High"
     }
   );
+
+  console.log("ERROR: Invalid risk percentage was accepted.");
 } catch (error) {
   console.log("Invalid risk percentage test:", error.message);
 }
@@ -75,7 +77,27 @@ try {
       riskLevel: "Low"
     }
   );
+
   console.log("ERROR: Invalid humidity was accepted.");
 } catch (error) {
   console.log("Invalid humidity test:", error.message);
+}
+
+// Test 6: Invalid temperature
+try {
+  formatDashboardResult(
+    "milk",
+    {
+      temperature: 150,
+      humidity: 65
+    },
+    {
+      riskScore: 30,
+      riskLevel: "Low"
+    }
+  );
+
+  console.log("ERROR: Invalid temperature was accepted.");
+} catch (error) {
+  console.log("Invalid temperature test:", error.message);
 }
