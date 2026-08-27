@@ -5,6 +5,9 @@ const {
   insertReading,
   insertRiskResult,
   getReadings,
+  getReadingsByFoodType,
+  getAlertsByDateRange,
+  archiveOldReadings,
   getAlertsForRiskResult,
 } = require('../database');
 const { checkAndTriggerAlert } = require('../alerts');
@@ -13,7 +16,7 @@ const TEST_DB_PATH = path.join(__dirname, 'test.db');
 
 let db;
 
-beforeEach(() => {
+beforeEach(() => {  
   if (fs.existsSync(TEST_DB_PATH)) fs.unlinkSync(TEST_DB_PATH);
   db = getDb(TEST_DB_PATH);
 });
@@ -118,4 +121,101 @@ test('checkAndTriggerAlert throws a clear error for a non-existent risk result i
   expect(() => {
     checkAndTriggerAlert(db, 99999);
   }).toThrow(/no risk_result found/i);
+});
+test('getReadingsByFoodType returns readings for the requested food', () => {
+  insertReading(db, {
+    food_type: 'milk',
+    temperature: 5,
+    humidity: 40,
+    time_elapsed: 1,
+  });
+
+  insertReading(db, {
+    food_type: 'milk',
+    temperature: 6,
+    humidity: 42,
+    time_elapsed: 2,
+  });
+
+  insertReading(db, {
+    food_type: 'fish',
+    temperature: 4,
+    humidity: 50,
+    time_elapsed: 1,
+  });
+
+  const readings = getReadingsByFoodType(db, 'milk');
+
+  expect(readings.length).toBe(2);
+  expect(readings.every(r => r.food_type === 'milk')).toBe(true);
+});
+
+test('getReadingsByFoodType rejects an invalid food type', () => {
+  expect(() => getReadingsByFoodType(db, '')).toThrow(
+    'foodType must be a non-empty string'
+  );
+});
+test('getAlertsByDateRange returns alerts within the date range', () => {
+  const readingId = insertReading(db, {
+    food_type: 'fish',
+    temperature: 5,
+    humidity: 50,
+    time_elapsed: 2,
+  });
+
+  const riskResultId = insertRiskResult(db, {
+    reading_id: readingId,
+    risk_level: 'High',
+    score: 0.9,
+  });
+
+  checkAndTriggerAlert(db, riskResultId);
+
+  const alerts = getAlertsByDateRange(
+    db,
+    '2000-01-01',
+    '2100-01-01'
+  );
+
+  expect(alerts.length).toBe(2);
+});
+
+test('getAlertsByDateRange rejects an invalid date range', () => {
+  expect(() =>
+    getAlertsByDateRange(
+      db,
+      '2026-08-27',
+      '2026-08-20'
+    )
+  ).toThrow('startDate must be before endDate');
+});
+test('archiveOldReadings archives old readings', () => {
+  const readingId = insertReading(db, {
+    food_type: 'beef',
+    temperature: 5,
+    humidity: 40,
+    time_elapsed: 2,
+  });
+
+  db.prepare(
+    `UPDATE readings
+     SET created_at = '2000-01-01 00:00:00'
+     WHERE id = ?`
+  ).run(readingId);
+
+  const result = archiveOldReadings(db, 30);
+
+  expect(result.archivedCount).toBe(1);
+
+  const reading = db
+    .prepare('SELECT * FROM readings WHERE id = ?')
+    .get(readingId);
+
+  expect(reading.archived).toBe(1);
+});
+
+test('archiveOldReadings rejects an invalid number of days', () => {
+  expect(() => archiveOldReadings(db, 0)).toThrow(
+    'daysOld must be a positive number'
+  );
 });
