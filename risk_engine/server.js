@@ -4,6 +4,12 @@ const { predictRisk } = require("./ml/model");
 const app = express();
 
 app.use(express.json());
+app.get("/health", (req, res) => {
+  res.json({
+    status: "OK",
+    service: "Food Chain Guardian Risk Engine"
+  });
+});
 
 app.get("/", (req, res) => {
   res.json({
