@@ -4,6 +4,7 @@ const {
   DEFAULT_OPTIONS,
   FOOD_PROFILES,
   SensorSimulator,
+  getFoodProfile,
   validateReading
 } = require("../src/sensorSimulator");
 
@@ -17,6 +18,11 @@ test("exposes stable default options", () => {
     durationMs: 0,
     anomalyRate: 0.1
   });
+});
+
+test("returns a profile for a supported food type", () => {
+  assert.deepEqual(getFoodProfile("MILK"), FOOD_PROFILES.milk);
+  assert.throws(() => getFoodProfile("bread"), /Unsupported food type/);
 });
 
 test("generates normal readings inside the food profile range", () => {

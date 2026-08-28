@@ -53,6 +53,10 @@ function validateFoodType(foodType) {
   return normalizedFoodType;
 }
 
+function getFoodProfile(foodType) {
+  return FOOD_PROFILES[validateFoodType(foodType)];
+}
+
 function validateReading(reading) {
   if (!reading || typeof reading !== "object") {
     throw new Error("Sensor reading must be an object.");
@@ -199,6 +203,7 @@ module.exports = {
   DEFAULT_OPTIONS,
   FOOD_PROFILES,
   SensorSimulator,
+  getFoodProfile,
   validateFoodType,
   validateReading
 };
