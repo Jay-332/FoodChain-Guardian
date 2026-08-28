@@ -109,6 +109,10 @@ test("creates the requested number of sample readings", () => {
     readings.map((reading) => reading.timeElapsedHours),
     [0, 0, 0]
   );
+  assert.deepEqual(
+    readings.map((reading) => reading.readingId),
+    ["simulator-1-1", "simulator-1-2", "simulator-1-3"]
+  );
 });
 
 test("reports an inactive state before a stream starts", () => {
