@@ -96,6 +96,8 @@ class SensorSimulator extends EventEmitter {
     this.intervalMs = options.intervalMs === undefined ? DEFAULT_OPTIONS.intervalMs : options.intervalMs;
     this.durationMs = options.durationMs === undefined ? DEFAULT_OPTIONS.durationMs : options.durationMs;
     this.anomalyRate = options.anomalyRate === undefined ? DEFAULT_OPTIONS.anomalyRate : options.anomalyRate;
+    this.anomalyTemperatureDelta = options.anomalyTemperatureDelta;
+    this.anomalyHumidityDelta = options.anomalyHumidityDelta;
     this.random = options.random || Math.random;
     this.clock = options.clock || (() => Date.now());
     this.timer = null;
@@ -119,6 +121,15 @@ class SensorSimulator extends EventEmitter {
       throw new Error("anomalyRate must be between 0 and 1.");
     }
 
+    for (const [name, value] of Object.entries({
+      anomalyTemperatureDelta: this.anomalyTemperatureDelta,
+      anomalyHumidityDelta: this.anomalyHumidityDelta
+    })) {
+      if (value !== undefined && (typeof value !== "number" || !Number.isFinite(value) || value < 0)) {
+        throw new Error(`${name} must be a non-negative number.`);
+      }
+    }
+
     if (typeof this.random !== "function" || typeof this.clock !== "function") {
       throw new Error("random and clock must be functions.");
     }
@@ -135,6 +146,8 @@ class SensorSimulator extends EventEmitter {
 
     const profile = FOOD_PROFILES[this.foodType];
     const isAnomaly = this.random() < this.anomalyRate;
+    const temperatureDelta = this.anomalyTemperatureDelta ?? profile.anomaly.temperature;
+    const humidityDelta = this.anomalyHumidityDelta ?? profile.anomaly.humidity;
     const temperature = randomBetween(
       this.random,
       profile.temperature.min,
@@ -146,9 +159,9 @@ class SensorSimulator extends EventEmitter {
       readingId: `${this.sensorId}-${++this.readingNumber}`,
       sensorId: this.sensorId,
       foodType: this.foodType,
-      temperature: Number((temperature + (isAnomaly ? profile.anomaly.temperature : 0)).toFixed(2)),
+      temperature: Number((temperature + (isAnomaly ? temperatureDelta : 0)).toFixed(2)),
       humidity: Number(
-        Math.min(100, humidity + (isAnomaly ? profile.anomaly.humidity : 0)).toFixed(2)
+        Math.min(100, humidity + (isAnomaly ? humidityDelta : 0)).toFixed(2)
       ),
       timeElapsedHours: Number(timeElapsedHours.toFixed(2)),
       timestamp: new Date(this.clock()).toISOString(),

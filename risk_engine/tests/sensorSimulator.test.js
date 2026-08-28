@@ -115,3 +115,18 @@ test("reports an inactive state before a stream starts", () => {
 
   assert.equal(simulator.isRunning, false);
 });
+
+test("supports custom anomaly magnitudes", () => {
+  const simulator = new SensorSimulator({
+    anomalyRate: 1,
+    anomalyTemperatureDelta: 20,
+    anomalyHumidityDelta: 1,
+    random: fixedRandom,
+    clock: fixedClock
+  });
+
+  const reading = simulator.generateReading();
+
+  assert.equal(reading.temperature, 23.5);
+  assert.equal(reading.humidity, 66);
+});
