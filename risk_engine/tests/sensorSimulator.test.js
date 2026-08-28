@@ -174,3 +174,9 @@ test("rejects readings with invalid humidity", () => {
     /humidity must be between 0 and 100/
   );
 });
+
+test("rejects negative elapsed time", () => {
+  const simulator = new SensorSimulator({ random: fixedRandom, clock: fixedClock });
+
+  assert.throws(() => simulator.generateReading(-1), /timeElapsedHours/);
+});
