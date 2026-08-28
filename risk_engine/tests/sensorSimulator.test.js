@@ -161,3 +161,16 @@ test("supports every configured food profile", () => {
     assert.equal(simulator.generateReading().foodType, foodType);
   }
 });
+
+test("rejects readings with invalid humidity", () => {
+  assert.throws(
+    () => validateReading({
+      foodType: "milk",
+      temperature: 4,
+      humidity: 101,
+      timeElapsedHours: 1,
+      timestamp: "2026-08-28T00:00:00.000Z"
+    }),
+    /humidity must be between 0 and 100/
+  );
+});
