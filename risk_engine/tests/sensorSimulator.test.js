@@ -220,3 +220,10 @@ test("rejects non-finite temperature values", () => {
     /temperature must be a finite number/
   );
 });
+
+test("rejects invalid sample counts", () => {
+  const simulator = new SensorSimulator({ random: fixedRandom, clock: fixedClock });
+
+  assert.throws(() => simulator.createSampleReadings(0), /count must be/);
+  assert.throws(() => simulator.createSampleReadings(1.5), /count must be/);
+});
