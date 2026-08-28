@@ -207,3 +207,16 @@ test("rejects malformed timestamps", () => {
     /timestamp must be a valid ISO date string/
   );
 });
+
+test("rejects non-finite temperature values", () => {
+  assert.throws(
+    () => validateReading({
+      foodType: "milk",
+      temperature: Number.NaN,
+      humidity: 60,
+      timeElapsedHours: 1,
+      timestamp: "2026-08-28T00:00:00.000Z"
+    }),
+    /temperature must be a finite number/
+  );
+});
