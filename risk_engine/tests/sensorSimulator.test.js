@@ -92,6 +92,7 @@ test("rejects invalid simulator options", () => {
   assert.throws(() => new SensorSimulator({ foodType: "bread" }), /Unsupported food type/);
   assert.throws(() => new SensorSimulator({ intervalMs: 0 }), /intervalMs/);
   assert.throws(() => new SensorSimulator({ anomalyRate: 2 }), /anomalyRate/);
+  assert.throws(() => new SensorSimulator({ maxReadings: 0 }), /maxReadings/);
 });
 
 test("creates the requested number of sample readings", () => {

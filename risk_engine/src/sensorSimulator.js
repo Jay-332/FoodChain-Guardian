@@ -98,6 +98,7 @@ class SensorSimulator extends EventEmitter {
     this.anomalyRate = options.anomalyRate === undefined ? DEFAULT_OPTIONS.anomalyRate : options.anomalyRate;
     this.anomalyTemperatureDelta = options.anomalyTemperatureDelta;
     this.anomalyHumidityDelta = options.anomalyHumidityDelta;
+    this.maxReadings = options.maxReadings;
     this.random = options.random || Math.random;
     this.clock = options.clock || (() => Date.now());
     this.timer = null;
@@ -132,6 +133,10 @@ class SensorSimulator extends EventEmitter {
 
     if (typeof this.random !== "function" || typeof this.clock !== "function") {
       throw new Error("random and clock must be functions.");
+    }
+
+    if (this.maxReadings !== undefined && (!Number.isInteger(this.maxReadings) || this.maxReadings <= 0)) {
+      throw new Error("maxReadings must be a positive integer.");
     }
   }
 
@@ -182,15 +187,22 @@ class SensorSimulator extends EventEmitter {
     }
 
     this.startedAt = this.clock();
+    let emittedReadings = 0;
     const emitReading = () => {
       const elapsedHours = (this.clock() - this.startedAt) / (1000 * 60 * 60);
       const reading = this.generateReading(elapsedHours);
       onReading(reading);
       this.emit("reading", reading);
+      emittedReadings += 1;
+      if (this.maxReadings && emittedReadings >= this.maxReadings) {
+        this.stop();
+      }
     };
 
     emitReading();
-    this.timer = setInterval(emitReading, this.intervalMs);
+    if (!this.timer && (!this.maxReadings || emittedReadings < this.maxReadings)) {
+      this.timer = setInterval(emitReading, this.intervalMs);
+    }
 
     if (this.durationMs > 0) {
       this.stopTimer = setTimeout(() => this.stop(), this.durationMs);
