@@ -1,6 +1,7 @@
 const assert = require("node:assert/strict");
 const test = require("node:test");
 const {
+  DEFAULT_OPTIONS,
   FOOD_PROFILES,
   SensorSimulator,
   validateReading
@@ -8,6 +9,15 @@ const {
 
 const fixedRandom = () => 0.5;
 const fixedClock = () => 0;
+
+test("exposes stable default options", () => {
+  assert.deepEqual(DEFAULT_OPTIONS, {
+    foodType: "milk",
+    intervalMs: 1000,
+    durationMs: 0,
+    anomalyRate: 0.1
+  });
+});
 
 test("generates normal readings inside the food profile range", () => {
   const simulator = new SensorSimulator({

@@ -28,6 +28,13 @@ const FOOD_PROFILES = Object.freeze({
   })
 });
 
+const DEFAULT_OPTIONS = Object.freeze({
+  foodType: "milk",
+  intervalMs: 1000,
+  durationMs: 0,
+  anomalyRate: 0.1
+});
+
 function randomBetween(random, min, max) {
   return min + random() * (max - min);
 }
@@ -80,10 +87,10 @@ class SensorSimulator extends EventEmitter {
   constructor(options = {}) {
     super();
 
-    this.foodType = validateFoodType(options.foodType || "milk");
-    this.intervalMs = options.intervalMs === undefined ? 1000 : options.intervalMs;
-    this.durationMs = options.durationMs === undefined ? 0 : options.durationMs;
-    this.anomalyRate = options.anomalyRate === undefined ? 0.1 : options.anomalyRate;
+    this.foodType = validateFoodType(options.foodType || DEFAULT_OPTIONS.foodType);
+    this.intervalMs = options.intervalMs === undefined ? DEFAULT_OPTIONS.intervalMs : options.intervalMs;
+    this.durationMs = options.durationMs === undefined ? DEFAULT_OPTIONS.durationMs : options.durationMs;
+    this.anomalyRate = options.anomalyRate === undefined ? DEFAULT_OPTIONS.anomalyRate : options.anomalyRate;
     this.random = options.random || Math.random;
     this.clock = options.clock || (() => Date.now());
     this.timer = null;
@@ -189,6 +196,7 @@ class SensorSimulator extends EventEmitter {
 }
 
 module.exports = {
+  DEFAULT_OPTIONS,
   FOOD_PROFILES,
   SensorSimulator,
   validateFoodType,
