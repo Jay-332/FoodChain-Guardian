@@ -124,6 +124,10 @@ class SensorSimulator extends EventEmitter {
     }
   }
 
+  get isRunning() {
+    return Boolean(this.timer);
+  }
+
   generateReading(timeElapsedHours = 0) {
     if (typeof timeElapsedHours !== "number" || !Number.isFinite(timeElapsedHours) || timeElapsedHours < 0) {
       throw new Error("timeElapsedHours must be a non-negative number.");

@@ -109,3 +109,9 @@ test("creates the requested number of sample readings", () => {
     [0, 0, 0]
   );
 });
+
+test("reports an inactive state before a stream starts", () => {
+  const simulator = new SensorSimulator({ random: fixedRandom, clock: fixedClock });
+
+  assert.equal(simulator.isRunning, false);
+});
