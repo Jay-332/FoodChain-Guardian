@@ -1,0 +1,26 @@
+[
+  {
+    "foodType": "milk",
+    "temperature": 4.2,
+    "humidity": 65,
+    "timeElapsedHours": 1.5,
+    "timestamp": "2026-08-28T08:00:00.000Z",
+    "anomaly": false
+  },
+  {
+    "foodType": "chicken",
+    "temperature": 11.4,
+    "humidity": 91,
+    "timeElapsedHours": 2,
+    "timestamp": "2026-08-28T08:00:01.000Z",
+    "anomaly": true
+  },
+  {
+    "foodType": "spinach",
+    "temperature": 3.1,
+    "humidity": 89,
+    "timeElapsedHours": 3.25,
+    "timestamp": "2026-08-28T08:00:02.000Z",
+    "anomaly": false
+  }
+]
