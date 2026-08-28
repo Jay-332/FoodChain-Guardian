@@ -238,3 +238,19 @@ test("rejects negative anomaly magnitudes", () => {
     /anomalyHumidityDelta must be/
   );
 });
+
+test("emits each generated reading as an event", () => {
+  const simulator = new SensorSimulator({
+    maxReadings: 1,
+    random: fixedRandom,
+    clock: fixedClock
+  });
+  let eventReading;
+  simulator.once("reading", (reading) => {
+    eventReading = reading;
+  });
+
+  simulator.start(() => {});
+
+  assert.equal(eventReading.readingId, "simulator-1-1");
+});
