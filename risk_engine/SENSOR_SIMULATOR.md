@@ -25,6 +25,10 @@ Each reading includes `foodType`, `temperature`, `humidity`, `timeElapsedHours`,
 `timestamp`, and an `anomaly` flag. Supported food types are `milk`, `chicken`,
 `fish`, `tomato`, and `spinach`.
 
+Optional settings include `sensorId`, `maxReadings`, `anomalyTemperatureDelta`,
+and `anomalyHumidityDelta`. The simulator also emits `reading` and `stopped`
+events for stream consumers.
+
 Generate a finite dataset without starting timers:
 
 ```js
