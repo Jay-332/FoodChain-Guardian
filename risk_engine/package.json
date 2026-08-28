@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Use npm run test:simulator for the sensor simulator tests\"",
+    "test": "npm run test:simulator",
     "test:simulator": "node --test tests/sensorSimulator.test.js"
   },
   "keywords": [],
