@@ -194,3 +194,16 @@ test("prevents starting the same simulator twice", () => {
   assert.throws(() => simulator.start(() => {}), /already running/);
   stop();
 });
+
+test("rejects malformed timestamps", () => {
+  assert.throws(
+    () => validateReading({
+      foodType: "milk",
+      temperature: 4,
+      humidity: 60,
+      timeElapsedHours: 1,
+      timestamp: "invalid"
+    }),
+    /timestamp must be a valid ISO date string/
+  );
+});
