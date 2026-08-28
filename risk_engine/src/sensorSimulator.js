@@ -140,7 +140,8 @@ class SensorSimulator extends EventEmitter {
       ),
       timeElapsedHours: Number(timeElapsedHours.toFixed(2)),
       timestamp: new Date(this.clock()).toISOString(),
-      anomaly: isAnomaly
+      anomaly: isAnomaly,
+      anomalyType: isAnomaly ? "environmental-spike" : null
     };
 
     return validateReading(reading);

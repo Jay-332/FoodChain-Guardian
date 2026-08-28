@@ -38,6 +38,7 @@ test("generates normal readings inside the food profile range", () => {
 
   assert.equal(reading.foodType, "milk");
   assert.equal(reading.anomaly, false);
+  assert.equal(reading.anomalyType, null);
   assert.ok(reading.temperature >= profile.temperature.min);
   assert.ok(reading.temperature <= profile.temperature.max);
   assert.ok(reading.humidity >= profile.humidity.min);
@@ -57,6 +58,7 @@ test("generates an abnormal reading when anomaly rate is one", () => {
   const reading = simulator.generateReading();
 
   assert.equal(reading.anomaly, true);
+  assert.equal(reading.anomalyType, "environmental-spike");
   assert.ok(reading.humidity > FOOD_PROFILES.tomato.humidity.max);
   assert.ok(reading.humidity <= 100);
   assert.ok(reading.temperature > FOOD_PROFILES.tomato.temperature.max);
