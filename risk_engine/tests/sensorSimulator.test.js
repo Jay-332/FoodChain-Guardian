@@ -254,3 +254,16 @@ test("emits each generated reading as an event", () => {
 
   assert.equal(eventReading.readingId, "simulator-1-1");
 });
+
+test("emits a stopped event when manually stopped", () => {
+  const simulator = new SensorSimulator({ random: fixedRandom, clock: fixedClock });
+  let stopped = false;
+  simulator.once("stopped", () => {
+    stopped = true;
+  });
+  const stop = simulator.start(() => {});
+
+  stop();
+
+  assert.equal(stopped, true);
+});
