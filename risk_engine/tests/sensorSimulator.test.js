@@ -186,3 +186,11 @@ test("requires a callback when starting a stream", () => {
 
   assert.throws(() => simulator.start(), /onReading callback/);
 });
+
+test("prevents starting the same simulator twice", () => {
+  const simulator = new SensorSimulator({ random: fixedRandom, clock: fixedClock });
+  const stop = simulator.start(() => {});
+
+  assert.throws(() => simulator.start(() => {}), /already running/);
+  stop();
+});
