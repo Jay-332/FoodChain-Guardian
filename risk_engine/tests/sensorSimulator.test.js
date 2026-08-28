@@ -227,3 +227,14 @@ test("rejects invalid sample counts", () => {
   assert.throws(() => simulator.createSampleReadings(0), /count must be/);
   assert.throws(() => simulator.createSampleReadings(1.5), /count must be/);
 });
+
+test("rejects negative anomaly magnitudes", () => {
+  assert.throws(
+    () => new SensorSimulator({ anomalyTemperatureDelta: -1 }),
+    /anomalyTemperatureDelta must be/
+  );
+  assert.throws(
+    () => new SensorSimulator({ anomalyHumidityDelta: -1 }),
+    /anomalyHumidityDelta must be/
+  );
+});
