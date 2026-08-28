@@ -180,3 +180,9 @@ test("rejects negative elapsed time", () => {
 
   assert.throws(() => simulator.generateReading(-1), /timeElapsedHours/);
 });
+
+test("requires a callback when starting a stream", () => {
+  const simulator = new SensorSimulator({ random: fixedRandom, clock: fixedClock });
+
+  assert.throws(() => simulator.start(), /onReading callback/);
+});
