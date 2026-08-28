@@ -32,37 +32,37 @@
         <!-- Navigation updated -->
         <nav class="menu">
 
-            <button class="menu-item active">
+            <button class="menu-item active" data-view="dashboard">
                 <span>▣</span>
                 Dashboard
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" data-view="live-monitor">
                 <span>▣</span>
                 Live Monitor
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" data-view="food-summary">
                 <span>⌁</span>
                 Food Summary
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" data-view="alerts">
                 <span>♧</span>
                 Alerts
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" data-view="history">
                 <span>◷</span>
                 History & Logs
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" data-view="reports">
                 <span>▤</span>
                 Reports
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" data-view="settings">
                 <span>⚙</span>
                 Settings
             </button>
@@ -174,6 +174,8 @@
             </div>
 
         </header>
+
+        <section id="viewPanel" class="view-panel" hidden></section>
 
 
         <!-- ================= CARDS ================= -->
@@ -564,7 +566,7 @@
 
                 </table>
 
-                <button class="view-btn">
+                <button class="view-btn" id="viewAllFoods">
                     View All Foods →
                 </button>
 
@@ -581,7 +583,7 @@
                         Alerts
                     </h3>
 
-                    <a href="#">
+                    <a href="#" id="viewAllAlerts">
                         View All
                     </a>
 
@@ -667,7 +669,7 @@
                 </div>
 
 
-                <button class="view-btn">
+                <button class="view-btn" id="viewAlertHistory">
                     View Alert History →
                 </button>
 
