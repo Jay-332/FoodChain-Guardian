@@ -148,3 +148,16 @@ test("stops automatically after the maximum number of readings", async () => {
   assert.equal(readings.length, 2);
   assert.equal(simulator.isRunning, false);
 });
+
+test("supports every configured food profile", () => {
+  for (const foodType of Object.keys(FOOD_PROFILES)) {
+    const simulator = new SensorSimulator({
+      foodType,
+      anomalyRate: 0,
+      random: fixedRandom,
+      clock: fixedClock
+    });
+
+    assert.equal(simulator.generateReading().foodType, foodType);
+  }
+});
