@@ -37,6 +37,7 @@ test("generates normal readings inside the food profile range", () => {
   const profile = FOOD_PROFILES.milk;
 
   assert.equal(reading.foodType, "milk");
+  assert.equal(reading.sensorId, "simulator-1");
   assert.equal(reading.anomaly, false);
   assert.equal(reading.anomalyType, null);
   assert.ok(reading.temperature >= profile.temperature.min);
@@ -73,6 +74,17 @@ test("normalizes supported food types", () => {
   });
 
   assert.equal(simulator.foodType, "fish");
+});
+
+test("includes a configured sensor identity", () => {
+  const simulator = new SensorSimulator({
+    sensorId: "cold-room-2",
+    random: fixedRandom,
+    clock: fixedClock
+  });
+
+  assert.equal(simulator.generateReading().sensorId, "cold-room-2");
+  assert.throws(() => new SensorSimulator({ sensorId: " " }), /sensorId/);
 });
 
 test("rejects invalid simulator options", () => {

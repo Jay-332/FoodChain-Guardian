@@ -92,6 +92,7 @@ class SensorSimulator extends EventEmitter {
     super();
 
     this.foodType = validateFoodType(options.foodType || DEFAULT_OPTIONS.foodType);
+    this.sensorId = options.sensorId || "simulator-1";
     this.intervalMs = options.intervalMs === undefined ? DEFAULT_OPTIONS.intervalMs : options.intervalMs;
     this.durationMs = options.durationMs === undefined ? DEFAULT_OPTIONS.durationMs : options.durationMs;
     this.anomalyRate = options.anomalyRate === undefined ? DEFAULT_OPTIONS.anomalyRate : options.anomalyRate;
@@ -103,6 +104,10 @@ class SensorSimulator extends EventEmitter {
 
     if (!Number.isInteger(this.intervalMs) || this.intervalMs <= 0) {
       throw new Error("intervalMs must be a positive integer.");
+    }
+
+    if (typeof this.sensorId !== "string" || this.sensorId.trim() === "") {
+      throw new Error("sensorId must be a non-empty string.");
     }
 
     if (!Number.isInteger(this.durationMs) || this.durationMs < 0) {
@@ -133,6 +138,7 @@ class SensorSimulator extends EventEmitter {
     const humidity = randomBetween(this.random, profile.humidity.min, profile.humidity.max);
 
     const reading = {
+      sensorId: this.sensorId,
       foodType: this.foodType,
       temperature: Number((temperature + (isAnomaly ? profile.anomaly.temperature : 0)).toFixed(2)),
       humidity: Number(
