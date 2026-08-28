@@ -131,3 +131,20 @@ test("supports custom anomaly magnitudes", () => {
   assert.equal(reading.temperature, 23.5);
   assert.equal(reading.humidity, 66);
 });
+
+test("stops automatically after the maximum number of readings", async () => {
+  const simulator = new SensorSimulator({
+    intervalMs: 5,
+    maxReadings: 2,
+    random: fixedRandom,
+    clock: fixedClock
+  });
+  const readings = [];
+  const stopped = new Promise((resolve) => simulator.once("stopped", resolve));
+
+  simulator.start((reading) => readings.push(reading));
+  await stopped;
+
+  assert.equal(readings.length, 2);
+  assert.equal(simulator.isRunning, false);
+});
