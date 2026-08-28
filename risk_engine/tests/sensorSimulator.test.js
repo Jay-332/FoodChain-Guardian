@@ -38,6 +38,7 @@ test("generates normal readings inside the food profile range", () => {
 
   assert.equal(reading.foodType, "milk");
   assert.equal(reading.sensorId, "simulator-1");
+  assert.equal(reading.readingId, "simulator-1-1");
   assert.equal(reading.anomaly, false);
   assert.equal(reading.anomalyType, null);
   assert.ok(reading.temperature >= profile.temperature.min);

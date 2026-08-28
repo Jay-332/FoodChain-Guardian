@@ -101,6 +101,7 @@ class SensorSimulator extends EventEmitter {
     this.timer = null;
     this.stopTimer = null;
     this.startedAt = null;
+    this.readingNumber = 0;
 
     if (!Number.isInteger(this.intervalMs) || this.intervalMs <= 0) {
       throw new Error("intervalMs must be a positive integer.");
@@ -138,6 +139,7 @@ class SensorSimulator extends EventEmitter {
     const humidity = randomBetween(this.random, profile.humidity.min, profile.humidity.max);
 
     const reading = {
+      readingId: `${this.sensorId}-${++this.readingNumber}`,
       sensorId: this.sensorId,
       foodType: this.foodType,
       temperature: Number((temperature + (isAnomaly ? profile.anomaly.temperature : 0)).toFixed(2)),
