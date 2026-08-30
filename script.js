@@ -5,6 +5,7 @@ const clock = document.getElementById("clock");
 const date = document.getElementById("date");
 const uptime = document.getElementById("uptime");
 const chartsSection = document.getElementById("chartsSection");
+const analyticsSection = document.getElementById("analyticsSection");
 const foodPhotoInput = document.getElementById("foodPhoto");
 const foodPhotoPreview = document.getElementById("foodPhotoPreview");
 const foodPhotoMessage = document.getElementById("foodPhotoMessage");
@@ -91,10 +92,19 @@ function updateClockAndDate() {
 }
 
 function bindDashboardInteractions() {
-    menuItems.forEach((item) => {
+    menuItems.forEach((item, index) => {
         item.addEventListener("click", () => {
             menuItems.forEach((menuItem) => menuItem.classList.remove("active"));
             item.classList.add("active");
+
+            // Determine which view to show based on menu item
+            if (index === 0) {
+                switchView("dashboard");
+            } else if (index === 1) {
+                switchView("analytics");
+            } else {
+                switchView("dashboard");
+            }
         });
     });
 
@@ -113,6 +123,27 @@ function bindDashboardInteractions() {
     if (foodPhotoInput) {
         foodPhotoInput.addEventListener("change", handleFoodPhotoUpload);
         foodPhotoInput.onchange = handleFoodPhotoUpload;
+    }
+}
+
+function switchView(viewName) {
+    const mainContent = document.querySelector("main");
+    if (!mainContent) return;
+
+    const dashboardCards = mainContent.querySelector(".cards");
+    const dashboardBottom = mainContent.querySelector(".bottom-section");
+    const analyticsContent = document.getElementById("analyticsSection");
+
+    if (viewName === "dashboard") {
+        if (dashboardCards) dashboardCards.style.display = "block";
+        if (dashboardBottom) dashboardBottom.style.display = "block";
+        if (analyticsContent) analyticsContent.style.display = "none";
+        if (chartsSection) chartsSection.classList.add("visible");
+    } else if (viewName === "analytics") {
+        if (dashboardCards) dashboardCards.style.display = "none";
+        if (dashboardBottom) dashboardBottom.style.display = "none";
+        if (analyticsContent) analyticsContent.style.display = "block";
+        setTimeout(initAnalyticsCharts, 100);
     }
 }
 
@@ -221,6 +252,70 @@ function initCharts() {
                     y: {
                         beginAtZero: false,
                         suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+    }
+}
+
+function initAnalyticsCharts() {
+    const riskDistCanvas = document.getElementById("riskDistributionChart");
+    const hourlyRiskCanvas = document.getElementById("hourlyRiskChart");
+
+    if (riskDistCanvas && window.Chart) {
+        new Chart(riskDistCanvas, {
+            type: "doughnut",
+            data: {
+                labels: ["Safe (0-33%)", "Medium (34-66%)", "High (67-100%)"],
+                datasets: [{
+                    data: [35, 45, 20],
+                    backgroundColor: [
+                        "#269c51",
+                        "#ee9d19",
+                        "#df3a3a"
+                    ],
+                    borderColor: "#fff",
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        });
+    }
+
+    if (hourlyRiskCanvas && window.Chart) {
+        new Chart(hourlyRiskCanvas, {
+            type: "bar",
+            data: {
+                labels: ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"],
+                datasets: [{
+                    label: "Average Risk Score (%)",
+                    data: [28, 32, 38, 45, 52, 48],
+                    backgroundColor: "#176bd1",
+                    borderColor: "#176bd1",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
                         suggestedMax: 100
                     }
                 }

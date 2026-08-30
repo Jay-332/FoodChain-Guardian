@@ -649,6 +649,149 @@ td {
 
 .food-photo-message {
     font-size: 12px;
+    color: #6b8299;
+    margin: 0;
+}
+
+
+/* ================= ANALYTICS SECTION ================= */
+
+.analytics-section {
+    padding: 32px 0;
+}
+
+.analytics-header {
+    margin-bottom: 32px;
+}
+
+.analytics-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #17202a;
+    margin-bottom: 8px;
+}
+
+.analytics-header p {
+    color: #6b8299;
+    font-size: 14px;
+}
+
+.analytics-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.analytics-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8ecf2;
+}
+
+.analytics-card .section-title {
+    margin-bottom: 20px;
+}
+
+.analytics-card .section-title h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #17202a;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 16px;
+}
+
+.analytics-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.analytics-table thead {
+    background: #f5f7fa;
+}
+
+.analytics-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #5a7086;
+    border-bottom: 1px solid #dfe5eb;
+}
+
+.analytics-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e8ecf2;
+}
+
+.analytics-table tbody tr:hover {
+    background: #f9fafc;
+}
+
+.analytics-table .badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.stat-box {
+    background: linear-gradient(135deg, #f5f7fa 0%, #edf4ff 100%);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #dfe5eb;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #176bd1;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5a7086;
+    margin-bottom: 4px;
+}
+
+.stat-range {
+    font-size: 11px;
+    color: #8b9aad;
+}
+
+@media (max-width: 1200px) {
+    .analytics-content {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.food-photo-message {
+    font-size: 12px;
     color: #697682;
 }
 

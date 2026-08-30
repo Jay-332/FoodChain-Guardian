@@ -632,6 +632,126 @@
         </section>
 
 
+        <!-- ================= ANALYTICS SECTION ================= -->
+
+        <section id="analyticsSection" class="analytics-section" style="display: none;">
+
+            <div class="analytics-header">
+                <h1>Analytics & Insights</h1>
+                <p>Food safety analysis and risk trends</p>
+            </div>
+
+            <div class="analytics-content">
+
+                <!-- Risk Distribution -->
+                <div class="analytics-card">
+                    <div class="section-title">
+                        <h3>Risk Level Distribution</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="riskDistributionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Food Risk Summary -->
+                <div class="analytics-card">
+                    <div class="section-title">
+                        <h3>Food Items Risk Summary</h3>
+                    </div>
+                    <table class="analytics-table">
+                        <thead>
+                            <tr>
+                                <th>Food Item</th>
+                                <th>Avg Risk</th>
+                                <th>Max Risk</th>
+                                <th>Status</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🥛 Milk</td>
+                                <td>12%</td>
+                                <td>18%</td>
+                                <td><span class="badge safe">Safe</span></td>
+                                <td>↘ Stable</td>
+                            </tr>
+                            <tr>
+                                <td>🍅 Tomato</td>
+                                <td>52%</td>
+                                <td>68%</td>
+                                <td><span class="badge medium">Medium</span></td>
+                                <td>↗ Increasing</td>
+                            </tr>
+                            <tr>
+                                <td>🍗 Chicken</td>
+                                <td>78%</td>
+                                <td>92%</td>
+                                <td><span class="badge high">High</span></td>
+                                <td>↗ Critical</td>
+                            </tr>
+                            <tr>
+                                <td>🥬 Lettuce</td>
+                                <td>35%</td>
+                                <td>48%</td>
+                                <td><span class="badge medium">Medium</span></td>
+                                <td>→ Stable</td>
+                            </tr>
+                            <tr>
+                                <td>🍇 Grapes</td>
+                                <td>24%</td>
+                                <td>32%</td>
+                                <td><span class="badge safe">Safe</span></td>
+                                <td>↘ Improving</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Environmental Stats -->
+                <div class="analytics-card">
+                    <div class="section-title">
+                        <h3>Environmental Statistics</h3>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value">4.6°C</div>
+                            <div class="stat-label">Avg Temperature</div>
+                            <div class="stat-range">Range: 3.8-5.9°C</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">67%</div>
+                            <div class="stat-label">Avg Humidity</div>
+                            <div class="stat-range">Range: 58-82%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">42%</div>
+                            <div class="stat-label">Avg Risk</div>
+                            <div class="stat-range">Range: 12-92%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">98.5%</div>
+                            <div class="stat-label">System Uptime</div>
+                            <div class="stat-range">Last 30 days</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time-based Analysis -->
+                <div class="analytics-card">
+                    <div class="section-title">
+                        <h3>Risk Trend by Hour</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="hourlyRiskChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
         <!-- FOOTER -->
 
         <footer>
