@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: #f5f7fa;
+    background: linear-gradient(180deg, #edf4ff 0%, #f5f7fa 18%, #f4f7f8 100%);
     color: #17202a;
 }
 
@@ -38,7 +38,7 @@ select {
 
 .sidebar {
     width: 270px;
-    background: #071426;
+    background: linear-gradient(180deg, #071426 0%, #0b1b2c 100%);
     color: white;
     padding: 22px 16px;
     position: fixed;
@@ -46,6 +46,7 @@ select {
     top: 0;
     bottom: 0;
     overflow-y: auto;
+    box-shadow: 4px 0 18px rgba(7, 20, 38, 0.2);
 }
 
 .brand {
@@ -92,6 +93,7 @@ select {
     display: flex;
     gap: 14px;
     align-items: center;
+    transition: all 0.2s ease;
 }
 
 .menu-item span {
@@ -99,10 +101,16 @@ select {
     font-size: 18px;
 }
 
-.menu-item:hover,
+.menu-item:hover {
+    background: rgba(25, 133, 78, 0.18);
+    color: #b8f0c4;
+    transform: translateX(2px);
+}
+
 .menu-item.active {
-    background: #155b3a;
+    background: linear-gradient(90deg, #1c6d47, #155b3a);
     color: #75e39b;
+    box-shadow: inset 0 0 0 1px rgba(117, 227, 155, 0.2);
 }
 
 
@@ -198,15 +206,19 @@ select {
     border: none;
     margin-top: 17px;
     padding: 11px;
-    background: #20bb56;
+    background: linear-gradient(180deg, #28c767, #1aa54f);
     color: white;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
+    box-shadow: 0 8px 16px rgba(32, 187, 86, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .refresh-btn:hover {
-    background: #18a64a;
+    background: linear-gradient(180deg, #21b95f, #158d46);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(32, 187, 86, 0.28);
 }
 
 
@@ -243,8 +255,9 @@ select {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #e0e4e9;
-    background: white;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,252,0.96));
     padding: 0 18px;
+    box-shadow: 0 2px 14px rgba(23, 32, 42, 0.04);
 }
 
 .header-left {
@@ -345,9 +358,10 @@ select {
 .card {
     background: white;
     border: 1px solid #e3e7ec;
-    border-radius: 11px;
+    border-radius: 14px;
     padding: 18px;
     min-height: 150px;
+    box-shadow: 0 10px 22px rgba(16, 24, 40, 0.04);
 }
 
 .card-title {
@@ -469,8 +483,9 @@ select {
 .chart-card {
     background: white;
     border: 1px solid #e2e6ea;
-    border-radius: 11px;
+    border-radius: 14px;
     padding: 18px;
+    box-shadow: 0 10px 20px rgba(16, 24, 40, 0.04);
 }
 
 .chart-header {
@@ -536,8 +551,9 @@ select {
 .alerts-card {
     background: white;
     border: 1px solid #e1e5e9;
-    border-radius: 11px;
+    border-radius: 14px;
     padding: 18px;
+    box-shadow: 0 10px 20px rgba(16, 24, 40, 0.04);
 }
 
 .section-title h3,
@@ -600,6 +616,40 @@ td {
     color: #1470d2;
     font-weight: bold;
     cursor: pointer;
+}
+
+.food-photo-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 18px;
+}
+
+.food-photo-upload label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #2d3945;
+}
+
+.food-photo-upload input[type="file"] {
+    max-width: 220px;
+    font-size: 12px;
+}
+
+.food-photo-preview {
+    width: 100%;
+    max-width: 220px;
+    max-height: 160px;
+    object-fit: cover;
+    border: 1px solid #dfe5eb;
+    border-radius: 8px;
+    background: #f5f7fa;
+    display: block;
+}
+
+.food-photo-message {
+    font-size: 12px;
+    color: #697682;
 }
 
 

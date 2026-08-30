@@ -3,11 +3,70 @@ const refreshButton = document.getElementById("refreshBtn");
 const lastUpdated = document.getElementById("lastUpdated");
 const clock = document.getElementById("clock");
 const date = document.getElementById("date");
+const uptime = document.getElementById("uptime");
 const chartsSection = document.getElementById("chartsSection");
+const foodPhotoInput = document.getElementById("foodPhoto");
+const foodPhotoPreview = document.getElementById("foodPhotoPreview");
+const foodPhotoMessage = document.getElementById("foodPhotoMessage");
 
 function showCharts() {
     if (chartsSection) {
         chartsSection.classList.add("visible");
+    }
+}
+
+function updateUptime() {
+    if (!uptime) {
+        return;
+    }
+
+    const now = new Date();
+    const elapsedMs = now.getTime() - performance.timeOrigin;
+    const totalSeconds = Math.floor(elapsedMs / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+    const seconds = String(totalSeconds % 60).padStart(2, "0");
+    uptime.textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+function handleFoodPhotoUpload(event) {
+    const file = event && event.target && event.target.files ? event.target.files[0] : null;
+
+    if (!file) {
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+        if (foodPhotoPreview) {
+            foodPhotoPreview.hidden = true;
+            foodPhotoPreview.removeAttribute("src");
+            if (foodPhotoPreview.dataset.objectUrl) {
+                URL.revokeObjectURL(foodPhotoPreview.dataset.objectUrl);
+                delete foodPhotoPreview.dataset.objectUrl;
+            }
+        }
+
+        if (foodPhotoMessage) {
+            foodPhotoMessage.textContent = "Please choose a valid image file.";
+        }
+        return;
+    }
+
+    const previousObjectUrl = foodPhotoPreview && foodPhotoPreview.dataset.objectUrl;
+    if (previousObjectUrl) {
+        URL.revokeObjectURL(previousObjectUrl);
+    }
+
+    const imageUrl = URL.createObjectURL(file);
+
+    if (foodPhotoPreview) {
+        foodPhotoPreview.dataset.objectUrl = imageUrl;
+        foodPhotoPreview.src = imageUrl;
+        foodPhotoPreview.hidden = false;
+    }
+
+    if (foodPhotoMessage) {
+        foodPhotoMessage.textContent = `Previewing ${file.name}`;
     }
 }
 
@@ -31,26 +90,42 @@ function updateClockAndDate() {
     }
 }
 
-menuItems.forEach((item) => {
-    item.addEventListener("click", () => {
-        menuItems.forEach((menuItem) => menuItem.classList.remove("active"));
-        item.classList.add("active");
-    });
-});
-
-if (refreshButton && lastUpdated) {
-    refreshButton.addEventListener("click", () => {
-        const now = new Date();
-        lastUpdated.textContent = now.toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit"
+function bindDashboardInteractions() {
+    menuItems.forEach((item) => {
+        item.addEventListener("click", () => {
+            menuItems.forEach((menuItem) => menuItem.classList.remove("active"));
+            item.classList.add("active");
         });
-        updateClockAndDate();
     });
+
+    if (refreshButton && lastUpdated) {
+        refreshButton.addEventListener("click", () => {
+            const now = new Date();
+            lastUpdated.textContent = now.toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit"
+            });
+            updateClockAndDate();
+            updateUptime();
+        });
+    }
+
+    if (foodPhotoInput) {
+        foodPhotoInput.addEventListener("change", handleFoodPhotoUpload);
+        foodPhotoInput.onchange = handleFoodPhotoUpload;
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindDashboardInteractions);
+} else {
+    bindDashboardInteractions();
 }
 
 updateClockAndDate();
+updateUptime();
 setInterval(updateClockAndDate, 1000);
+setInterval(updateUptime, 1000);
 
 function initCharts() {
     const environmentCanvas = document.getElementById("environmentChart");
