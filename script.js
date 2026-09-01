@@ -1,20 +1,49 @@
 const menuItems = document.querySelectorAll(".menu-item");
 const refreshButton = document.getElementById("refreshBtn");
 const lastUpdated = document.getElementById("lastUpdated");
-const clock = document.getElementById("clock");
-const date = document.getElementById("date");
-const uptime = document.getElementById("uptime");
-const chartsSection = document.getElementById("chartsSection");
-const analyticsSection = document.getElementById("analyticsSection");
-const foodPhotoInput = document.getElementById("foodPhoto");
-const foodPhotoPreview = document.getElementById("foodPhotoPreview");
-const foodPhotoMessage = document.getElementById("foodPhotoMessage");
+const viewPanel = document.getElementById("viewPanel");
+const dashboardSections = document.querySelectorAll(".main > .cards, .main > .charts, .main > .bottom-section");
+const sidebar = document.querySelector(".sidebar");
 
-function showCharts() {
-    if (chartsSection) {
-        chartsSection.classList.add("visible");
-    }
+const views = {
+    "live-monitor": ["Live Monitor", "Current sensor readings from monitored storage areas.", "All sensors are online. Temperature and humidity readings are updating normally."],
+    "food-summary": ["Food Summary", "Overview of monitored food items and their current risk.", "5 food items monitored · 3 safe · 1 medium risk · 1 high risk"],
+    alerts: ["Alerts", "Review active food safety warnings.", "1 high-risk alert and 1 medium-risk alert require attention."],
+    history: ["History & Logs", "Recent monitoring events and system activity.", "No system outages recorded. Last sync completed just now."],
+    reports: ["Reports", "Generate a snapshot of current food safety conditions.", "The latest daily report is ready to review."],
+    settings: ["Settings", "Manage monitoring preferences.", "Auto Update is enabled and the system is connected to SQLite."]
+};
+
+function selectView(view) {
+    const item = document.querySelector(`[data-view="${view}"]`);
+    if (item) item.click();
 }
+
+menuItems.forEach((item) => {
+    item.addEventListener("click", () => {
+        menuItems.forEach((menuItem) => menuItem.classList.remove("active"));
+        item.classList.add("active");
+
+        const view = item.dataset.view;
+        const viewDetails = views[view];
+        const headerTitle = document.querySelector(".header h1");
+        const headerDescription = document.querySelector(".header p");
+
+        if (!viewDetails) {
+            headerTitle.textContent = "Dashboard";
+            headerDescription.textContent = "Real-time monitoring of food storage conditions and spoilage risk";
+            viewPanel.hidden = true;
+            dashboardSections.forEach((section) => section.hidden = false);
+            return;
+        }
+
+        headerTitle.textContent = viewDetails[0];
+        headerDescription.textContent = viewDetails[1];
+        dashboardSections.forEach((section) => section.hidden = true);
+        viewPanel.innerHTML = `<h2>${viewDetails[0]}</h2><p>${viewDetails[2]}</p>`;
+        viewPanel.hidden = false;
+    });
+});
 
 function updateUptime() {
     if (!uptime) {
@@ -107,222 +136,29 @@ function bindDashboardInteractions() {
             }
         });
     });
+});
 
-    if (refreshButton && lastUpdated) {
-        refreshButton.addEventListener("click", () => {
-            const now = new Date();
-            lastUpdated.textContent = now.toLocaleTimeString([], {
-                hour: "numeric",
-                minute: "2-digit"
-            });
-            updateClockAndDate();
-            updateUptime();
-        });
-    }
+document.getElementById("hamburger").addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+});
 
-    if (foodPhotoInput) {
-        foodPhotoInput.addEventListener("change", handleFoodPhotoUpload);
-        foodPhotoInput.onchange = handleFoodPhotoUpload;
-    }
-}
+document.getElementById("viewAllFoods").addEventListener("click", () => {
+    selectView("food-summary");
+});
 
-function switchView(viewName) {
-    const mainContent = document.querySelector("main");
-    if (!mainContent) return;
+document.getElementById("viewAllAlerts").addEventListener("click", (event) => {
+    event.preventDefault();
+    selectView("alerts");
+});
 
-    const dashboardCards = mainContent.querySelector(".cards");
-    const dashboardBottom = mainContent.querySelector(".bottom-section");
-    const analyticsContent = document.getElementById("analyticsSection");
+document.getElementById("viewAlertHistory").addEventListener("click", () => {
+    selectView("history");
+});
 
-    if (viewName === "dashboard") {
-        if (dashboardCards) dashboardCards.style.display = "block";
-        if (dashboardBottom) dashboardBottom.style.display = "block";
-        if (analyticsContent) analyticsContent.style.display = "none";
-        if (chartsSection) chartsSection.classList.add("visible");
-    } else if (viewName === "analytics") {
-        if (dashboardCards) dashboardCards.style.display = "none";
-        if (dashboardBottom) dashboardBottom.style.display = "none";
-        if (analyticsContent) analyticsContent.style.display = "block";
-        setTimeout(initAnalyticsCharts, 100);
-    }
-}
+document.getElementById("autoUpdate").addEventListener("change", (event) => {
+    lastUpdated.textContent = event.target.checked ? "Auto update enabled" : "Auto update paused";
+});
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bindDashboardInteractions);
-} else {
-    bindDashboardInteractions();
-}
-
-updateClockAndDate();
-updateUptime();
-setInterval(updateClockAndDate, 1000);
-setInterval(updateUptime, 1000);
-
-function initCharts() {
-    const environmentCanvas = document.getElementById("environmentChart");
-    const riskCanvas = document.getElementById("riskChart");
-
-    if (environmentCanvas && window.Chart) {
-        new Chart(environmentCanvas, {
-            type: "line",
-            data: {
-                labels: ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"],
-                datasets: [
-                    {
-                        label: "Temperature (°C)",
-                        data: [4.2, 4.8, 5.4, 5.0, 4.7, 4.9],
-                        borderColor: "#176bd1",
-                        backgroundColor: "rgba(23, 107, 209, 0.12)",
-                        borderWidth: 2,
-                        tension: 0.35,
-                        fill: true
-                    },
-                    {
-                        label: "Humidity (%)",
-                        data: [62, 60, 68, 74, 71, 66],
-                        borderColor: "#62a840",
-                        backgroundColor: "rgba(98, 168, 64, 0.12)",
-                        borderWidth: 2,
-                        tension: 0.35,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false
-                    }
-                }
-            }
-        });
-    }
-
-    if (riskCanvas && window.Chart) {
-        new Chart(riskCanvas, {
-            type: "line",
-            data: {
-                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                datasets: [
-                    {
-                        label: "Low Risk",
-                        data: [12, 18, 28, 26, 18, 15],
-                        borderColor: "#269c51",
-                        backgroundColor: "rgba(38, 156, 81, 0.1)",
-                        borderWidth: 2,
-                        tension: 0.35,
-                        fill: false
-                    },
-                    {
-                        label: "Medium Risk",
-                        data: [24, 34, 42, 48, 39, 31],
-                        borderColor: "#ee9d19",
-                        backgroundColor: "rgba(238, 157, 25, 0.1)",
-                        borderWidth: 2,
-                        tension: 0.35,
-                        fill: false
-                    },
-                    {
-                        label: "High Risk",
-                        data: [8, 14, 20, 24, 16, 12],
-                        borderColor: "#df3a3a",
-                        backgroundColor: "rgba(223, 58, 58, 0.1)",
-                        borderWidth: 2,
-                        tension: 0.35,
-                        fill: false
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        suggestedMin: 0,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
-    }
-}
-
-function initAnalyticsCharts() {
-    const riskDistCanvas = document.getElementById("riskDistributionChart");
-    const hourlyRiskCanvas = document.getElementById("hourlyRiskChart");
-
-    if (riskDistCanvas && window.Chart) {
-        new Chart(riskDistCanvas, {
-            type: "doughnut",
-            data: {
-                labels: ["Safe (0-33%)", "Medium (34-66%)", "High (67-100%)"],
-                datasets: [{
-                    data: [35, 45, 20],
-                    backgroundColor: [
-                        "#269c51",
-                        "#ee9d19",
-                        "#df3a3a"
-                    ],
-                    borderColor: "#fff",
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: "bottom"
-                    }
-                }
-            }
-        });
-    }
-
-    if (hourlyRiskCanvas && window.Chart) {
-        new Chart(hourlyRiskCanvas, {
-            type: "bar",
-            data: {
-                labels: ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"],
-                datasets: [{
-                    label: "Average Risk Score (%)",
-                    data: [28, 32, 38, 45, 52, 48],
-                    backgroundColor: "#176bd1",
-                    borderColor: "#176bd1",
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
-    }
-}
-
-initCharts();
-showCharts();
+document.getElementById("dateFilter").addEventListener("change", (event) => {
+    lastUpdated.textContent = `Range: ${event.target.value}`;
+});

@@ -2,8 +2,13 @@ const dashboardFoodTypeMap = {
   milk: "dairy",
   chicken: "meat",
   spinach: "vegetables",
-  grapes: "cut-fruits",
-  tomato: "vegetables"
+  grapes: "cut_fruits",
+  tomato: "vegetables",
+  cut_fruits: "cut_fruits",
+  vegetables: "vegetables",
+  dairy: "dairy",
+  meat: "meat",
+  fish: "fish"
 };
 
 function mapDashboardFoodType(foodType) {

@@ -60,10 +60,15 @@ app.post("/risk", (req, res) => {
   });
 }
 
-if (sensorData.storageHours < 0) {
-  return res.status(400).json({
-    error: "Storage hours cannot be negative"
-  });
+if (
+    typeof sensorData.storageHours !== "number" ||
+    !Number.isFinite(sensorData.storageHours) ||
+    sensorData.storageHours < 0
+) {
+    return res.status(400).json({
+        error: "Storage hours must be a valid non-negative number"
+    });
+}
 }
 
     const risk = predictRisk({
